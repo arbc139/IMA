@@ -11,6 +11,7 @@ name = "abc"
 query = "INSERT INTO LUNG_SUBSTANCE (PM_ID, S_NAME) VALUES (%s, %s)"
 print query
 curs.execute(query,(pmid,name))
+conn.commit()
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 pmid_reg = re.compile('(?<=\">)[^<]*(?=\<\/pmid)')
 f = open('lung_genetic_mesh.txt')
