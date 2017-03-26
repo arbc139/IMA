@@ -10,6 +10,8 @@ for line in lines[:5]:
 	print line
 	name = name_reg.findall(line)
 	pmid = pmid_reg.findall(line)
+	name_list = name.split(",")
 	print name
+	print name_list
 	print pmid
 #sys.stdout.writelines(lines[:20])
