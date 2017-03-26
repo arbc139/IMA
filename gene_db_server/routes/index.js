@@ -12,9 +12,9 @@ router.get('/', (request, response, next) => {
 
 // GET SQL query results
 router.get('/sql', (request, response, next) => {
-  console.log('request: ', request.body);
+  console.log('query: ', request.query);
   // Find rows by SQL query in GENE DB.
-  connection.query('SELECT * from Persons', (err, rows) => {
+  connection.query(request.query.query, (err, rows) => {
     if (err) {
       response.send('Invalid SQL statement');
       return;
