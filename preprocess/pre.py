@@ -10,7 +10,7 @@ for line in lines[:5]:
 	print line
 	name = name_reg.findall(line)
 	pmid = pmid_reg.findall(line)
-	name_list = name.split(",")
+	name_list = name[0].split(",")
 	print name
 	print name_list
 	print pmid
