@@ -8,9 +8,8 @@ conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', cha
 curs = conn.cursor()
 pmid = "1234"
 name = "abc"
-query = "INSERT INTO LUNG_SUBSTANCE (PM_ID, S_NAME) VALUES ('%s', '%s')"
+query = "INSERT INTO LUNG_SUBSTANCE (PM_ID, S_NAME) VALUES (%s, %s)"
 print query
-q2 = "INSERT INTO LUNG_SUBSTANCE (PM_ID, S_NAME) VALUES ('1234', 'abc');"
 curs.execute(query,(pmid,name))
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 pmid_reg = re.compile('(?<=\">)[^<]*(?=\<\/pmid)')
