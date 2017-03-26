@@ -6,7 +6,7 @@ import pymysql
 conn = pymysql.connect(host='localhost', user='', password='',db='mesh', charset='utf8')
  
 curs = conn.cursor()
-pmid = 1234
+pmid = "1234"
 name = "abc"
 query = "INSERT INTO LUNG_SUBSTANCE (PM_ID, S_NAME) VALUES ('"+pmid+"', '"+name+"');"
 curs.execute(query)
