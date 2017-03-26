@@ -3,7 +3,7 @@ import re
 import sys
 import pymysql
  
-conn = pymysql.connect(host='localhost', user='root', password='thwhd2017',db='mesh', charset='utf8')
+conn = pymysql.connect(host='localhost', user='', password='',db='mesh', charset='utf8')
  
 curs = conn.cursor()
 pmid = 1234
