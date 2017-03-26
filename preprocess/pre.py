@@ -9,7 +9,7 @@ curs = conn.cursor()
 pmid = 1234
 name = "abc"
 query = "INSERT INTO LUNG_SUBSTANCE (PM_ID, S_NAME) VALUES ('"+pmid+"', '"+name+"');"
-curs.execute(sql)
+curs.execute(query)
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 pmid_reg = re.compile('(?<=\">)[^<]*(?=\<\/pmid)')
 f = open('lung_genetic_mesh.txt')
