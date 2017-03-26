@@ -3,11 +3,8 @@ import re
 import sys
 import pymysql
  
-# MySQL Connection 연결
-conn = pymysql.connect(host='localhost', user='root', password='',
-                       db='thwhd2017', charset='utf8')
+conn = pymysql.connect(host='localhost', user='root', password='',db='thwhd2017', charset='utf8')
  
-# Connection 으로부터 Cursor 생성
 curs = conn.cursor()
 pmid = 1234
 name = "abc"
