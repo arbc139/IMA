@@ -36,7 +36,6 @@ def receptor(name):
 		
 	else:
 		temp_sub = ' '.join(name) 
-		print temp_sub
 	substance_replace.append(temp_sub)
 
 def anti(name):
@@ -64,7 +63,6 @@ if __name__ == '__main__':
 	for row in rows :
 		del substance_replace[:] 
 		name = row[2].split(", ")
-		print row[2]
 		protein_detect = protein_reg.findall(name[0])
 		protein_detect_2 = protein_reg_2.findall(name[0])
 		Protein_detect = Protein_reg.findall(name[0])
@@ -81,7 +79,3 @@ if __name__ == '__main__':
 			query = "INSERT INTO LUNG_PROCESSED (S_ID, PM_ID,P_NAME) VALUES (%s, %s,%s)"	
 			curs.execute(query,(row[0],row[1],elm))
 			conn.commit()
-		
-		print substance_replace
-		print "\n"
-	
