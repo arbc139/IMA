@@ -12,15 +12,13 @@ router.get('/', (request, response, next) => {
 
 // GET SQL query results
 router.get('/sql', (request, response, next) => {
-  console.log('query: ', request.query);
   // Find rows by SQL query in GENE DB.
   connection.query(request.query.query, (err, rows) => {
     if (err) {
       response.send('Invalid SQL statement');
       return;
     }
-
-    console.log('The solution is: ', rows);
+    
     response.send(rows);
   });
 });

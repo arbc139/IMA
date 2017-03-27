@@ -1,8 +1,8 @@
 
 module.exports = {
   host: 'localhost',
-  user: 'root',
-  password: '',
+  user: 'totoro',
+  password: 'thwhd2017',
   port: 3306,
   database: 'mesh',
 };
