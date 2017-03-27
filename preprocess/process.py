@@ -76,7 +76,7 @@ def others(name):
 	
 
 if __name__ == '__main__':
-	query = "SELECT * FROM LUNG_SUBSTANCE WHERE S_ID > 500 and S_ID < 502"
+	query = "SELECT * FROM LUNG_SUBSTANCE WHERE S_ID > 500 and S_ID < 550"
 	curs.execute(query)
 	rows = curs.fetchall()
 	for row in rows :
