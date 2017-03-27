@@ -1,10 +1,11 @@
 # Gene DB server
 
 ## 서버 구축 방법
-- `ps -a` 을 이용하여 **ngrok** 가 실행되어있는지 확인.
+- `systemctl | grep ngrok` 을 이용하여 **ngrok** 가 실행되어있는지 확인.
   - **ngrok**이 실행되어있지 않다면 `nohup ngrok http 3000 &`
   - `curl localhost:4040/api/tunnels` 을 이용하여 3000 포트와 연결된 domain 주소를 확인
-- `npm start`
+- `systemctl | grep node` 을 이용하여 **node server** 가 실행되어있는지 확인.
+  - 실행되어 있지 않다면 `npm start`
 
 ## 서버 사용 방법
 - `${domain 주소}/sql?query=${쿼리}`
