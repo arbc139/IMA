@@ -1,11 +1,9 @@
 import tokenize
 import re
-import pymysql
- 
-conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8') 
-curs = conn.cursor()
 
 type_reg = re.compile('Type \w+|type \w+|subtype \w+|sub\-type \w+|Subtype \w+|Sub\-type \w+')
+name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
+
 spcae_reg = re.compile('[ ]\w+')
 protein_reg = re.compile('\w*[ ]protein')
 protein_reg_2 = re.compile('\w*[ ]protein$')
@@ -48,35 +46,16 @@ def protein_delete(name):
 
 def others(name):
 	for elm in name:
-		type_detect = type_reg.findall(elm)
-	if type_detect :
-		type_num = spcae_reg.findall(type_detect[0])
-		if type_num[0] == ' I' or type_num[0] == ' 1':	
-			type_num_replace = '1'
-		elif type_num[0] == ' II' or type_num[0] == ' 2':	
-			type_num_replace = '2'
-		elif type_num[0] == ' III' or type_num[0] == '3':	
-			type_num_replace = '3'
-		elif type_num[0] == ' IV' or type_num[0] == '4':	
-			type_num_replace = '4'
-		elif type_num[0] == ' V' or type_num[0] == '5':	
-			type_num_replace = '4'
-		else:	
-			type_num_replace = type_num[0]
-		temp_sub = ' '.join(name[:len(name)-1]) + ' ' +type_num_replace	
-		substance_replace.append(temp_sub)
-	else:
-		for elm in name:
-			substance_replace.append(elm)
-		if len(name) > 1:
-			temp_name =  ' '.join(name)	
-			substance_replace.append(temp_name)
+		substance_replace.append(elm)
+	if len(name) > 1:
+		temp_name =  ' '.join(name)	
+		substance_replace.append(temp_name)
 	
 
 	
 
 if __name__ == '__main__':
-	query = "SELECT * FROM LUNG_SUBSTANCE WHERE S_ID > 500 and S_ID < 550"
+	query = "SELECT * FROM LUNG_SUBSTANCE WHERE S_ID > 50 and S_ID < 60"
 	curs.execute(query)
 	rows = curs.fetchall()
 	for row in rows :
@@ -102,3 +81,4 @@ if __name__ == '__main__':
 		
 		print substance_replace
 		print "\n"
+	
