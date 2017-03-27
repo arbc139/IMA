@@ -95,5 +95,10 @@ if __name__ == '__main__':
 				anti(name)
 			else:
 				others(name)
+		for elm in substance_replace:
+			query = "INSERT INTO LUNG_PROCESSED (S_ID, PM_ID,P_NAME) VALUES (%s, %s,%s)"	
+			curs.execute(query,(row[0],row[1],elm))
+			conn.commit()
+		
 		print substance_replace
 		print "\n"
