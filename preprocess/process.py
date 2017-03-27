@@ -1,6 +1,9 @@
 import tokenize
 import re
-
+import pymysql
+ 
+conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8') 
+curs = conn.cursor()
 type_reg = re.compile('Type \w+|type \w+|subtype \w+|sub\-type \w+|Subtype \w+|Sub\-type \w+')
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 
