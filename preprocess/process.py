@@ -79,12 +79,10 @@ if __name__ == '__main__':
 	query = "SELECT * FROM LUNG_SUBSTANCE WHERE S_ID > 500 and S_ID < 550"
 	curs.execute(query)
 	rows = curs.fetchall()
-	for row in rows:
-	print rows
-	"""for test_case in test_cases :
+	for row in rows :
 		del substance_replace[:] 
-		name = test_case[1].split(", ")
-		print test_case[1]
+		name = row[2].split(", ")
+		print row[2]
 		protein_detect = protein_reg.findall(name[0])
 		protein_detect_2 = protein_reg_2.findall(name[0])
 		Protein_detect = Protein_reg.findall(name[0])
@@ -99,4 +97,3 @@ if __name__ == '__main__':
 				others(name)
 		print substance_replace
 		print "\n"
-	"""
