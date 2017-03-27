@@ -80,7 +80,7 @@ if __name__ == '__main__':
 	curs.execute(query)
 	rows = curs.fetchall()
 	for row in rows:
-		print row
+	print rows
 	"""for test_case in test_cases :
 		del substance_replace[:] 
 		name = test_case[1].split(", ")
