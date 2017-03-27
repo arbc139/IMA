@@ -13,7 +13,7 @@ except ImportError:
 uri = 'http://rest.genenames.org'
 
 # TODO(totoro): Need to implement search request using gene name.
-path = '/fetch/hgnc_id/1097'
+path = '/search/braf'
 
 httpObject = http.Http()
 
@@ -25,9 +25,9 @@ response, content = httpObject.request(
 )
 
 if response['status'] == '200':
-  # Assume that content is a json reply
-  # parse content with the json module 
-  data = json.loads(content)
+  # Assume that content is a json reply.
+  # Parse content with the json module.
+  data = json.loads(content)['response']
   print('Json response:', data)
 else:
   print('Error detected:', response['status'])
