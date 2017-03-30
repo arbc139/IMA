@@ -1,6 +1,11 @@
 #!/usr/bin/python
 
 from http_wrapper import HttpWrapper
+import sys
+
+START_S_ID = None
+if len(sys.argv) > 1:
+  START_S_ID = sys.argv[1]
 
 hgnc_search_uri = 'http://rest.genenames.org'
 db_uri = 'http://e3cb0988.ngrok.io'
@@ -10,7 +15,10 @@ db_http = HttpWrapper(db_uri)
 all_processed = db_http.request(
   '/sql',
   'GET',
-  { 'query': 'SELECT * FROM LUNG_PROCESSED ORDER BY S_ID' },
+  { 
+    'query': 'SELECT * FROM LUNG_PROCESSED ORDER BY S_ID' if START_S_ID is None else
+    'SELECT * FROM LUNG_PROCESSED WHERE S_ID > %s ORDER BY S_ID' % (START_S_ID),
+  },
   '',
 )
 
