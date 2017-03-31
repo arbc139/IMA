@@ -2,7 +2,6 @@
 
 from http_wrapper import HttpWrapper
 import sys
-import time
 
 START_S_ID = None
 if len(sys.argv) > 1:
@@ -51,9 +50,6 @@ for processed in all_processed:
   max_doc = get_max_score_doc(response['docs'])
   print('INSERT INTO LUNG_GENES (S_ID, PM_ID, HGNC_ID, SYMBOL, MAX_SCORE) VALUES (%s, %s, "%s", "%s", %s) ON DUPLICATE KEY UPDATE HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s' % (
         processed['S_ID'], processed['PM_ID'], max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], max_doc['hgnc_id'], max_doc['symbol'], max_doc['score']))
-  
-  # TODO(totoro): Find workaround better than this...
-  time.sleep(1)
   
   db_http.request(
     '/sql',
