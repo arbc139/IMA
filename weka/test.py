@@ -28,9 +28,9 @@ for pm_id in pm_ids:
 		curs.execute(query)
 		match = curs.fetchall()
 		if match:
-			thesis.append(1)
+			thesis.append('1')
 		else:
-			thesis.append(0)
+			thesis.append('0')
 	outstr = ', '.join(thesis)
 	f_2.write(outstr+"\n")
 conn.close()	
