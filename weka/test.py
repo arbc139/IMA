@@ -32,6 +32,7 @@ for pm_id in pm_ids:
 		else:
 			thesis.append('0')
 	outstr = ', '.join(thesis)
+	print outstr
 	f_2.write(outstr+"\n")
 conn.close()	
 
