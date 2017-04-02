@@ -3,7 +3,7 @@ import re
 import sys
 import pymysql
 
- f_2 = open('test.arff','w')
+f_2 = open('test.arff','w')
 
 conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8')
  
