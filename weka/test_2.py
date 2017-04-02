@@ -3,7 +3,7 @@ import re
 import sys
 import pymysql
 
-f_2 = open('test_2.arff','w')
+f_2 = open('test_3.arff','w')
 
 conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8')
  
@@ -22,7 +22,7 @@ f_2.write('@data\n')
 thesis = []
 for pm_id in pm_ids:
 	del thesis[:] 
-	query = "SELECT  * FROM LUNG_GENES_TEST WHERE  PM_ID="+str(pm_id[0])+" AND MAX_SCORE > 1.5 limit 50;" 
+	query = "SELECT  SYMBOL FROM LUNG_GENES_TEST WHERE  PM_ID="+str(pm_id[0])+" AND MAX_SCORE > 1.5;" 
 	curs.execute(query)
 	match = curs.fetchall()
 	print match
