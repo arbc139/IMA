@@ -17,14 +17,22 @@ pm_ids = curs.fetchall()
 f_2.write('@relation LUNG_CANCER.symbolic'+'\n\n')
 for sym in symbols:
 	f_2.write('@attribute '+sym[0]+' {0,1}\n')
+f_2.write('@data\n')
+
+thesis = []
 for pm_id in pm_ids:
+	del thesis[:] 
 	for sym in symbols:
 		query = "SELECT  * FROM LUNG_GENES_TEST WHERE  PM_ID="+str(pm_id[0])+" AND SYMBOL = '"+sym[0]+"';" 
 		print query
 		curs.execute(query)
 		match = curs.fetchall()
 		if match:
-			print match
+			thesis.append(1)
+		else:
+			thesis.append(0)
+	outstr = ', '.join(thesis)
+	f_2.write(outstr+"\n")
 conn.close()	
 
 
