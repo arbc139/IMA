@@ -23,7 +23,8 @@ for pm_id in pm_ids:
 		print query
 		curs.execute(query)
 		match = curs.fetchall()
-		print match
+		if match:
+			print match
 conn.close()	
 
 
