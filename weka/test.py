@@ -19,7 +19,7 @@ for sym in symbols:
 	f_2.write('@attribute '+sym[0]+' {0,1}\n')
 for pm_id in pm_ids:
 	for sym in symbols:
-		query = "SELECT  * FROM LUNG_GENES WHERE  PM_ID="+pm_id[0]+" AND SYMBOL = "+sym[0] 
+		query = "SELECT  * FROM LUNG_GENES WHERE  PM_ID="+str(pm_id[0])+" AND SYMBOL = "+sym[0] 
 		curs.execute(query)
 		match = curs.fetchall()
 		print match
