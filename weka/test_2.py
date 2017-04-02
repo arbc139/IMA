@@ -20,23 +20,22 @@ for sym in symbols:
 f_2.write('@data\n')
 
 thesis = []
-for pm_id in pm_ids:
+for pm_id in pm_ids[:100]:
 	del thesis[:] 
 	query = "SELECT  SYMBOL FROM LUNG_GENES_TEST WHERE  PM_ID="+str(pm_id[0])+" AND MAX_SCORE > 1.5;" 
 	curs.execute(query)
 	match = curs.fetchall()
 	print match
-	"""for sym in symbols:
-		query = "SELECT  * FROM LUNG_GENES_TEST WHERE  PM_ID="+str(pm_id[0])+" AND SYMBOL = '"+sym[0]+"';" 
-		#print query
-		
-		if match:
+	for sym in symbols:
+		if sym in match:
+			print sym
+			print match
 			thesis.append('1')
 		else:
 			thesis.append('?')
 	outstr = ', '.join(thesis)
 	#print outstr
-	f_2.write(outstr+'\n')"""
+	f_2.write(outstr+'\n')
 conn.close()	
 
 
