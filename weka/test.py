@@ -3,7 +3,7 @@ import re
 import sys
 import pymysql
 
-f_2 = open('test.arff','w')
+f_2 = open('test_2.arff','w')
 
 conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8')
  
@@ -30,7 +30,7 @@ for pm_id in pm_ids:
 		if match:
 			thesis.append('1')
 		else:
-			thesis.append('0')
+			thesis.append('?')
 	outstr = ', '.join(thesis)
 	print outstr
 	f_2.write(outstr+"\n")
