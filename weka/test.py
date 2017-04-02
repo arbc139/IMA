@@ -24,7 +24,7 @@ for pm_id in pm_ids:
 	del thesis[:] 
 	for sym in symbols:
 		query = "SELECT  * FROM LUNG_GENES_TEST WHERE  PM_ID="+str(pm_id[0])+" AND SYMBOL = '"+sym[0]+"';" 
-		print query
+		#print query
 		curs.execute(query)
 		match = curs.fetchall()
 		if match:
@@ -32,7 +32,7 @@ for pm_id in pm_ids:
 		else:
 			thesis.append('?')
 	outstr = ', '.join(thesis)
-	print outstr
+	#print outstr
 	f_2.write(outstr+'\n')
 conn.close()	
 
