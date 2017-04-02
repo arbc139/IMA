@@ -33,7 +33,7 @@ for pm_id in pm_ids:
 			thesis.append('?')
 	outstr = ', '.join(thesis)
 	print outstr
-	f_2.write(outstr+"\n")
+	f_2.write(outstr+'\n')
 conn.close()	
 
 
