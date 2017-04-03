@@ -8,7 +8,7 @@ f_2 = open('test_3.arff','w')
 conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8')
  
 curs = conn.cursor()
-query = "SELECT  SYMBOL FROM LUNG_GENES_TEST GROUP BY SYMBOL HAVING AVG(MAX_SCORE)>1.8 AND COUNT(*)>50"
+query = "SELECT  SYMBOL FROM LUNG_GENES_TEST GROUP BY SYMBOL HAVING AVG(MAX_SCORE)>5 AND COUNT(*)>50"
 curs.execute(query)
 symbols = curs.fetchall()
 query = "SELECT  DISTINCT PM_ID FROM LUNG_GENES_TEST"
@@ -22,7 +22,7 @@ f_2.write('@data\n')
 thesis = []
 for pm_id in pm_ids:
 	del thesis[:] 
-	query = "SELECT  SYMBOL FROM LUNG_GENES_TEST WHERE  PM_ID="+str(pm_id[0])+" AND MAX_SCORE > 1.8;" 
+	query = "SELECT  SYMBOL FROM LUNG_GENES_TEST WHERE  PM_ID="+str(pm_id[0])+" AND MAX_SCORE > 5;" 
 	curs.execute(query)
 	match = curs.fetchall()
 	#print match
