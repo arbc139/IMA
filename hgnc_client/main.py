@@ -36,6 +36,10 @@ def get_max_score_doc(result_docs):
   return max(result_docs, key = lambda doc: doc['score'])
 
 for processed in all_processed:
+  # Except for % character
+  if '%' in processed['P_NAME']:
+    continue
+
   # Hgnc response
   response = hgnc_http.request(
     '/search/' + quote(processed['P_NAME']), 'GET', '', ''

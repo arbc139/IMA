@@ -34,8 +34,6 @@ hgnc_http = HttpWrapper(hgnc_search_uri)
 def get_max_score_doc(result_docs):
   return max(result_docs, key = lambda doc: doc['score'])
 
-print('all processed:', all_processed)
-
 for processed in all_processed:
   # Hgnc response
   response = hgnc_http.request(
