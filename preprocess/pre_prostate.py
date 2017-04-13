@@ -2,7 +2,8 @@ import tokenize
 import re
 import sys
 import pymysql
- 
+
+
 conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8')
  
 curs = conn.cursor()
