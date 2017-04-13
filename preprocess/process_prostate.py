@@ -24,11 +24,11 @@ def receptor(name):
 			type_num_replace = '1'
 		elif type_num[0] == ' II' or type_num[0] == ' 2':	
 			type_num_replace = '2'
-		elif type_num[0] == ' III' or type_num[0] == '3':	
+		elif type_num[0] == ' III' or type_num[0] == ' 3':	
 			type_num_replace = '3'
-		elif type_num[0] == ' IV' or type_num[0] == '4':	
+		elif type_num[0] == ' IV' or type_num[0] == ' 4':	
 			type_num_replace = '4'
-		elif type_num[0] == ' V' or type_num[0] == '5':	
+		elif type_num[0] == ' V' or type_num[0] == ' 5':	
 			type_num_replace = '4'
 		else:	
 			type_num_replace = type_num[0]
