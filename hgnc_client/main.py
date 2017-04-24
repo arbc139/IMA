@@ -17,8 +17,8 @@ all_processed = db_http.request(
   '/sql',
   'GET',
   { 
-    'query': 'SELECT * FROM LUNG_PROCESSED ORDER BY S_ID' if START_S_ID is None else
-    'SELECT * FROM LUNG_PROCESSED WHERE S_ID > %s ORDER BY S_ID' % (START_S_ID),
+    'query': 'SELECT * FROM PROSTATE_PROCESSED ORDER BY S_ID' if START_S_ID is None else
+    'SELECT * FROM PROSTATE_PROCESSED WHERE S_ID > %s ORDER BY S_ID' % (START_S_ID),
   },
   '',
 )
@@ -53,14 +53,14 @@ for processed in all_processed:
 
   sid_hgnc_map[processed['S_ID']] = response['maxScore']
   max_doc = get_max_score_doc(response['docs'])
-  print('INSERT INTO LUNG_GENES (S_ID, PM_ID, HGNC_ID, SYMBOL, MAX_SCORE) VALUES (%s, %s, "%s", "%s", %s) ON DUPLICATE KEY UPDATE HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s' % (
+  print('INSERT INTO PROSTATE_GENES (S_ID, PM_ID, HGNC_ID, SYMBOL, MAX_SCORE) VALUES (%s, %s, "%s", "%s", %s) ON DUPLICATE KEY UPDATE HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s' % (
         processed['S_ID'], processed['PM_ID'], max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], max_doc['hgnc_id'], max_doc['symbol'], max_doc['score']))
   
   db_http.request(
     '/sql',
     'GET',
     {
-      'query': 'INSERT INTO LUNG_GENES (S_ID, PM_ID, HGNC_ID, SYMBOL, MAX_SCORE) VALUES (%s, %s, "%s", "%s", %s) ON DUPLICATE KEY UPDATE HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s' % (
+      'query': 'INSERT INTO PROSTATE_GENES (S_ID, PM_ID, HGNC_ID, SYMBOL, MAX_SCORE) VALUES (%s, %s, "%s", "%s", %s) ON DUPLICATE KEY UPDATE HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s' % (
         processed['S_ID'], processed['PM_ID'], max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], max_doc['hgnc_id'], max_doc['symbol'], max_doc['score']),
     },
     '',
