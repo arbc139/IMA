@@ -22,6 +22,9 @@ with db.cursor(pymysql.cursors.DictCursor) as cursor:
 
 hgnc_http = HttpWrapper('http://rest.genenames.org')
 
+def get_max_score_doc(result_docs):
+  return max(result_docs, key = lambda doc: doc['score'])
+
 # Search using P_NAME from processed rows.
 only_once = False
 for processed in all_processed:
@@ -44,15 +47,20 @@ for processed in all_processed:
 
   # Ignore empty docs, not equal to response's max score.
   if not response['docs'] or \
-    not math.isclose(original['MAX_SCORE'], response['maxScore'], abs_tol=0.0000001):
+    not math.isclose(original['MAX_SCORE'], response['maxScore'], abs_tol=0.01):
     continue
   
-  only_once = True
-  print('founded!')
-  print(response['docs'])
+  max_doc = get_max_score_doc(response['docs'])
+  
+  gene_family_info = None
+  with db.cursor(pymysql.cursors.DictCursor) as cursor:
+    cursor.execute('SELECT * FROM GENES_FAMILY where APPROVED_SYMBOL=%s', (max_doc['symbol'],))
+    gene_family_info = cursor.fetchone()
+  print(gene_family_info)
 
+  print('UPDATE LUNG_GENES SET MESH_NAME=%s WHERE S_ID=%s' % (processed['P_NAME'], processed['S_ID']))
+  only_once = True
   """
-  print('UPDATE LUNG_GENES SET MESH_NAME=%s' % (processed['P_NAME']))
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('UPDATE LUNG_GENES SET MESH_NAME=%s', (processed['P_NAME'],))
   db.commit()
