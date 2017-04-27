@@ -18,7 +18,7 @@ if len(sys.argv) > 1:
 
 db = pymysql.connect(host='localhost', user='root', password='', db='mesh', charset='utf8')
 
-elpased_millis = get_current_millis()
+elapsed_millis = get_current_millis()
 # Get all preprocessed MeSH terms in DB.
 all_processed = None
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
