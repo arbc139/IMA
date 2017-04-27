@@ -15,17 +15,20 @@ db = pymysql.connect(host='localhost', user='root', password='', db='mesh', char
 # Get all preprocessed MeSH terms in DB.
 all_processed = None
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
-  query = 'SELECT * FROM LUNG_PROCESSED ORDER BY S_ID' if START_S_ID is None else
-    'SELECT * FROM LUNG_PROCESSED WHERE S_ID > %s ORDER BY S_ID' % (START_S_ID)
+  query = 'SELECT * FROM LUNG_PROCESSED ORDER BY S_ID' if START_S_ID is None \
+    else 'SELECT * FROM LUNG_PROCESSED WHERE S_ID > %s ORDER BY S_ID' % (START_S_ID)
   cursor.execute(query)
   all_processed = cursor.fetchall()
-print(all_processed)
 
-# Search using P_NAME from processed rows.
-"""
 hgnc_http = HttpWrapper('http://rest.genenames.org')
 
+# Search using P_NAME from processed rows.
+only_once = False
 for processed in all_processed:
+  if only_once:
+    break
+  only_once = True
+
   # Workaround: Except for % character
   if '%' in processed['P_NAME']:
     continue
@@ -34,6 +37,7 @@ for processed in all_processed:
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM LUNG_GENES where S_ID = %d', (processed['S_ID'],))
     original = cursor.fetchone()
+  print(original)
 
   # Hgnc response
   response = hgnc_http.request(
@@ -45,7 +49,9 @@ for processed in all_processed:
     not math.isclose(original['MAX_SCORE'], response['maxScore'], abs_tol=0.0000001):
     continue
   
+  """
+  print('UPDATE LUNG_GENES SET MESH_NAME=%s' % (processed['P_NAME']))
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('UPDATE LUNG_GENES SET MESH_NAME=%s', (processed['P_NAME'],))
   db.commit()
-"""
+  """
