@@ -2,6 +2,7 @@
 
 from http_wrapper import HttpWrapper
 from urllib.parse import quote
+import difflib
 import math
 import pymysql
 import sys
@@ -56,12 +57,18 @@ for processed in all_processed:
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM GENES_FAMILY where APPROVED_SYMBOL=%s', (max_doc['symbol'],))
     gene_family_info = cursor.fetchone()
-  print(gene_family_info)
 
-  print('UPDATE LUNG_GENES SET MESH_NAME=%s WHERE S_ID=%s' % (processed['P_NAME'], processed['S_ID']))
+  name_score = difflib.SequenceMatcher(None, processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME']).ratio()
+  print('UPDATE LUNG_GENES SET MESH_NAME="%s", GENE_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s' % (
+    processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID']))
   only_once = True
+
   """
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
-    cursor.execute('UPDATE LUNG_GENES SET MESH_NAME=%s', (processed['P_NAME'],))
+    cursor.execute(
+      'UPDATE LUNG_GENES SET MESH_NAME="%s", GENE_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s',
+      (processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID'])
+    )
   db.commit()
   """
+
