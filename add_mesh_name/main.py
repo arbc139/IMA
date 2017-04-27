@@ -62,7 +62,7 @@ for processed in all_processed:
   if not gene_family_info:
     continue
 
-  print('P_NAME:', processed['P_NAME'], 'FAMILY_NAME:', gene_family_info['GENE_FAMILY_INFO'])
+  print('P_NAME:', processed['P_NAME'], 'FAMILY_NAME:', gene_family_info['GENE_FAMILY_NAME'])
   # Get a name similarity score between MeSH query and HGNC family name.
   name_score = difflib.SequenceMatcher(None, processed['P_NAME'].lower(), gene_family_info['GENE_FAMILY_NAME'].lower()).ratio()
 
