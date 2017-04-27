@@ -27,11 +27,7 @@ def get_max_score_doc(result_docs):
   return max(result_docs, key = lambda doc: doc['score'])
 
 # Search using P_NAME from processed rows.
-only_once = False
 for processed in all_processed:
-  if only_once:
-    break
-
   # Workaround: Except for % character
   if '%' in processed['P_NAME']:
     continue
@@ -58,17 +54,17 @@ for processed in all_processed:
     cursor.execute('SELECT * FROM GENES_FAMILY where APPROVED_SYMBOL=%s', (max_doc['symbol'],))
     gene_family_info = cursor.fetchone()
 
+  # Get a name similarity score between MeSH query and HGNC family name.
   name_score = difflib.SequenceMatcher(None, processed['P_NAME'].lower(), gene_family_info['GENE_FAMILY_NAME'].lower()).ratio()
-  print('UPDATE LUNG_GENES SET MESH_NAME="%s", GENE_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s' % (
-    processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID']))
-  only_once = True
 
-  """
+  print('UPDATE LUNG_GENES SET MESH_NAME="%s", HGNC_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s' % (
+    processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID']))
+
+  # Send a query to update LUNG_GENES.
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute(
-      'UPDATE LUNG_GENES SET MESH_NAME="%s", GENE_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s',
+      'UPDATE LUNG_GENES SET MESH_NAME="%s", HGNC_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s',
       (processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID'])
     )
   db.commit()
-  """
 
