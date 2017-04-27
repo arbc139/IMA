@@ -32,7 +32,7 @@ for processed in all_processed:
   if '%' in processed['P_NAME']:
     continue
   
-  print('S_ID:', processed['S_ID'])
+  print('S_ID:', processed['S_ID'], 'P_NAME:', processed['P_NAME'])
   
   original = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
@@ -58,6 +58,9 @@ for processed in all_processed:
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM GENES_FAMILY where APPROVED_SYMBOL=%s', (max_doc['symbol'],))
     gene_family_info = cursor.fetchone()
+
+  if not gene_family_info:
+    continue
 
   print('P_NAME:', processed['P_NAME'], 'FAMILY_NAME:', gene_family_info['GENE_FAMILY_INFO'])
   # Get a name similarity score between MeSH query and HGNC family name.
