@@ -58,7 +58,7 @@ for processed in all_processed:
     cursor.execute('SELECT * FROM GENES_FAMILY where APPROVED_SYMBOL=%s', (max_doc['symbol'],))
     gene_family_info = cursor.fetchone()
 
-  name_score = difflib.SequenceMatcher(None, processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME']).ratio()
+  name_score = difflib.SequenceMatcher(None, processed['P_NAME'].lower(), gene_family_info['GENE_FAMILY_NAME'].lower()).ratio()
   print('UPDATE LUNG_GENES SET MESH_NAME="%s", GENE_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s' % (
     processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID']))
   only_once = True
