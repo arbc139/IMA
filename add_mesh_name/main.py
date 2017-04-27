@@ -32,6 +32,8 @@ for processed in all_processed:
   if '%' in processed['P_NAME']:
     continue
   
+  print('S_ID:', processed['S_ID'])
+  
   original = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM LUNG_GENES where S_ID = %s', (processed['S_ID'],))
