@@ -27,7 +27,6 @@ only_once = False
 for processed in all_processed:
   if only_once:
     break
-  only_once = True
 
   # Workaround: Except for % character
   if '%' in processed['P_NAME']:
@@ -37,7 +36,6 @@ for processed in all_processed:
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM LUNG_GENES where S_ID = %s', (processed['S_ID'],))
     original = cursor.fetchone()
-  print(original)
 
   # Hgnc response
   response = hgnc_http.request(
@@ -49,6 +47,10 @@ for processed in all_processed:
     not math.isclose(original['MAX_SCORE'], response['maxScore'], abs_tol=0.0000001):
     continue
   
+  only_once = True
+  print('founded!')
+  print(response['docs'])
+
   """
   print('UPDATE LUNG_GENES SET MESH_NAME=%s' % (processed['P_NAME']))
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
