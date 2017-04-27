@@ -6,6 +6,11 @@ import difflib
 import math
 import pymysql
 import sys
+import time
+
+get_current_millis = lambda: int(round(time.time() * 1000))
+def get_elapsed_seconds(current_time, elapsed_millis):
+  return (current_time - elapsed_millis) / 1000.0
 
 START_S_ID = None
 if len(sys.argv) > 1:
@@ -13,6 +18,7 @@ if len(sys.argv) > 1:
 
 db = pymysql.connect(host='localhost', user='root', password='', db='mesh', charset='utf8')
 
+elpased_time = get_current_millis()
 # Get all preprocessed MeSH terms in DB.
 all_processed = None
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
@@ -20,6 +26,7 @@ with db.cursor(pymysql.cursors.DictCursor) as cursor:
     else 'SELECT * FROM LUNG_PROCESSED WHERE S_ID > %s ORDER BY S_ID' % (START_S_ID)
   cursor.execute(query)
   all_processed = cursor.fetchall()
+print('Find all processed time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
 hgnc_http = HttpWrapper('http://rest.genenames.org')
 
@@ -32,19 +39,20 @@ for processed in all_processed:
   if '%' in processed['P_NAME']:
     continue
   
-  print('S_ID:', processed['S_ID'], 'P_NAME:', processed['P_NAME'])
-  
+  elapsed_millis = get_current_millis()
   original = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM LUNG_GENES where S_ID = %s', (processed['S_ID'],))
     original = cursor.fetchone()
+  print('Get lung genes time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
+  elapsed_millis = get_current_millis()
   # Hgnc response
   response = hgnc_http.request(
     '/search/' + quote(processed['P_NAME']), 'GET', '', ''
   )['response']
+  print('HGNC response time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
-  print('Response received')
 
   # Ignore empty docs, not equal to response's max score.
   if not response['docs'] or \
@@ -53,22 +61,23 @@ for processed in all_processed:
   
   max_doc = get_max_score_doc(response['docs'])
   
-  print('SYMBOL:', max_doc['symbol'])
+  elapsed_millis = get_current_millis()
   gene_family_info = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM GENES_FAMILY where APPROVED_SYMBOL=%s', (max_doc['symbol'],))
     gene_family_info = cursor.fetchone()
+  print('Find gene family time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
   if not gene_family_info:
     continue
 
-  print('P_NAME:', processed['P_NAME'], 'FAMILY_NAME:', gene_family_info['GENE_FAMILY_NAME'])
   # Get a name similarity score between MeSH query and HGNC family name.
   name_score = difflib.SequenceMatcher(None, processed['P_NAME'].lower(), gene_family_info['GENE_FAMILY_NAME'].lower()).ratio()
 
   print('UPDATE LUNG_GENES SET MESH_NAME="%s", HGNC_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s' % (
     processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID']))
 
+  elapsed_millis = get_current_millis()
   # Send a query to update LUNG_GENES.
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute(
@@ -76,4 +85,5 @@ for processed in all_processed:
       (processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID'])
     )
   db.commit()
+  print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
