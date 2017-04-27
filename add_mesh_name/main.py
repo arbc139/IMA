@@ -35,7 +35,7 @@ for processed in all_processed:
   
   original = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
-    cursor.execute('SELECT * FROM LUNG_GENES where S_ID = %d', (processed['S_ID'],))
+    cursor.execute('SELECT * FROM LUNG_GENES where S_ID = %s', (processed['S_ID'],))
     original = cursor.fetchone()
   print(original)
 
