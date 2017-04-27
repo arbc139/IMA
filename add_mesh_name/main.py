@@ -44,6 +44,8 @@ for processed in all_processed:
     '/search/' + quote(processed['P_NAME']), 'GET', '', ''
   )['response']
 
+  print('Response received')
+
   # Ignore empty docs, not equal to response's max score.
   if not response['docs'] or \
     not math.isclose(original['MAX_SCORE'], response['maxScore'], abs_tol=0.01):
@@ -51,11 +53,13 @@ for processed in all_processed:
   
   max_doc = get_max_score_doc(response['docs'])
   
+  print('SYMBOL:', max_doc['symbol'])
   gene_family_info = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM GENES_FAMILY where APPROVED_SYMBOL=%s', (max_doc['symbol'],))
     gene_family_info = cursor.fetchone()
 
+  print('P_NAME:', processed['P_NAME'], 'FAMILY_NAME:', gene_family_info['GENE_FAMILY_INFO'])
   # Get a name similarity score between MeSH query and HGNC family name.
   name_score = difflib.SequenceMatcher(None, processed['P_NAME'].lower(), gene_family_info['GENE_FAMILY_NAME'].lower()).ratio()
 
