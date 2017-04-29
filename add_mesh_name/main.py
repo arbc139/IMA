@@ -45,6 +45,8 @@ for processed in all_processed:
     cursor.execute('SELECT * FROM LUNG_GENES where S_ID = %s', (processed['S_ID'],))
     original = cursor.fetchone()
   print('Get lung genes time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+  if not original:
+    continue
 
   elapsed_millis = get_current_millis()
   response = None
@@ -62,10 +64,9 @@ for processed in all_processed:
       print('HGNC response time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
       break
 
-
   # Ignore empty docs, not equal to response's max score.
   if not response['docs'] or \
-    not math.isclose(original['MAX_SCORE'], response['maxScore'], abs_tol=0.01):
+    (original and not math.isclose(original['MAX_SCORE'], response['maxScore'], abs_tol=0.01)):
     continue
   
   max_doc = get_max_score_doc(response['docs'])
