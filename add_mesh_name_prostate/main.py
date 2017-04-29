@@ -54,12 +54,13 @@ for processed in all_processed:
       response = hgnc_http.request(
         '/search/' + quote(processed['P_NAME']), 'GET', '', ''
       )['response']
-      print('HGNC response time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-      break
     except:
       print('HGNC request failed, so retry after 5 seconds')
       time.sleep(5)
       continue
+    else:
+      print('HGNC response time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+      break
 
   # Ignore empty docs, not equal to response's max score.
   if not response['docs'] or \
