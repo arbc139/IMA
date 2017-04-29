@@ -47,6 +47,7 @@ for processed in all_processed:
   print('Get lung genes time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
   elapsed_millis = get_current_millis()
+  response = None
   while True:
     try:
       # Hgnc response
