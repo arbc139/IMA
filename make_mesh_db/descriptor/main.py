@@ -35,7 +35,7 @@ elapsed_millis = get_current_millis()
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
   cursor.executemany(
     'INSERT INTO MESH_DESCRIPTOR (UID, NAME, TREE_NUMBERS) VALUES (%s, "%s", "%s")',
-    rows)
+    rows
   )
 db.commit()
 print('Insert mesh db time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
