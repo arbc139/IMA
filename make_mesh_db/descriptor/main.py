@@ -26,7 +26,7 @@ for record in records:
     tree_numbers.append(tree_number_record.findtext('TreeNumber'))
   
   print('INSERT INTO MESH_DESCRIPTOR (UID, NAME, TREE_NUMBERS) VALUES (%s, "%s", "%s")' % (
-    uid, name, str(tree_numbers), name, str(tree_numbers)))
+    uid, name, str(tree_numbers)))
   
   rows.append([uid, name, tree_numbers])
 
