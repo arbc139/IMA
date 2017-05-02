@@ -22,8 +22,8 @@ elapsed_millis = get_current_millis()
 # Get all genes in DB.
 all_genes = None
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
-  query = 'SELECT * FROM LUNG_GENES WHERE IS_FAMILY IS NULL ORDER BY S_ID' if START_S_ID is None \
-    else 'SELECT * FROM LUNG_GENES WHERE IS_FAMILY IS NULL AND S_ID > %s ORDER BY S_ID' % (START_S_ID)
+  query = 'SELECT * FROM PROSTATE_GENES WHERE IS_FAMILY IS NULL ORDER BY S_ID' if START_S_ID is None \
+    else 'SELECT * FROM PROSTATE_GENES WHERE IS_FAMILY IS NULL AND S_ID > %s ORDER BY S_ID' % (START_S_ID)
   cursor.execute(query)
   all_genes = cursor.fetchall()
 print('Find all genes time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
@@ -79,16 +79,16 @@ for gene in all_genes:
       is_family = True
       break
 
-  print('UPDATE LUNG_GENES SET IS_FAMILY=%d WHERE S_ID=%s' % (
+  print('UPDATE PROSTATE_GENES SET IS_FAMILY=%d WHERE S_ID=%s' % (
     1 if is_family else 0, gene['S_ID']))
   values.append([1 if is_family else 0, gene['S_ID']])
 
 
 elapsed_millis = get_current_millis()
-# Send a query to update LUNG_GENES.
+# Send a query to update PROSTATE_GENES.
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
   cursor.executemany(
-    'UPDATE LUNG_GENES SET IS_FAMILY=%d WHERE S_ID=%s',
+    'UPDATE PROSTATE_GENES SET IS_FAMILY=%d WHERE S_ID=%s',
     values
   )
 db.commit()
