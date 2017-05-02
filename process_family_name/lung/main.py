@@ -31,7 +31,8 @@ for gene in all_genes:
     continue
   
   family_names = gene['HGNC_FAMILY_NAME'].split('|')
-  print(family_names)
+  print('HGNC_FAMILY_NAME:', gene['HGNC_FAMILY_NAME'])
+  print('splitted:', family_names)
   break
     
   """
