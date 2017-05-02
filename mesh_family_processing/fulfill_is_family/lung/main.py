@@ -75,7 +75,7 @@ for gene in all_genes:
       print('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
       cursor.execute('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
       all_supplementals = cursor.fetchall()
-    if len(all_qualifiers) != 0 or len(all_descriptors) != 0 or len(all_supplementals) != 0:
+    if len(all_qualifiers) > 1 or len(all_descriptors) > 1 or len(all_supplementals) > 1:
       is_family = True
       break
 
