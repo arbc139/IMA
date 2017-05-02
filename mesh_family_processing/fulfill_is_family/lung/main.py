@@ -69,7 +69,7 @@ for gene in all_genes:
       lambda descriptor: re.match('.*%s\\..*' % (escaped_tree_number), descriptor['TREE_NUMBERS']),
       all_descriptors
     ))
-    if len(all_qualifiers) != 0 or len(all_descriptors) != 0:
+    if len(qualifiers) != 0 or len(descriptors) != 0:
       is_family = True
       break
 
