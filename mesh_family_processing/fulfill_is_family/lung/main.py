@@ -62,20 +62,20 @@ for gene in all_genes:
     escaped_tree_number = re.escape(tree_number)
     all_qualifiers = None
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
-      print('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
-      cursor.execute('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
+      print('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
+      cursor.execute('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
       all_qualifiers = cursor.fetchall()
     all_descriptors = None
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
-      print('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
-      cursor.execute('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
+      print('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
+      cursor.execute('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
       all_descriptors = cursor.fetchall()
     all_supplementals = None
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
-      print('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
-      cursor.execute('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
+      print('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
+      cursor.execute('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
       all_supplementals = cursor.fetchall()
-    if len(all_qualifiers) == 0 and len(all_descriptors) == 0 and len(all_supplementals) == 0:
+    if len(all_qualifiers) != 0 or len(all_descriptors) != 0 or len(all_supplementals) != 0:
       is_family = True
       break
 
