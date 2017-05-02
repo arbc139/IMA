@@ -81,7 +81,7 @@ elapsed_millis = get_current_millis()
 # Send a query to update LUNG_GENES.
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
   cursor.executemany(
-    'UPDATE LUNG_GENES SET IS_FAMILY=%d WHERE S_ID=%s',
+    'UPDATE LUNG_GENES SET IS_FAMILY=%s WHERE S_ID=%s',
     values
   )
 db.commit()
