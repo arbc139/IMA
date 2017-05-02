@@ -44,6 +44,7 @@ for gene in all_genes:
   
   # Get MeSH query
   mesh_name = None
+  max_doc = None
   if len(processeds) == 1:
     mesh_name = processeds[0]['P_NAME']
   else:
@@ -65,9 +66,54 @@ for gene in all_genes:
           break
       if not response['docs']:
         continue
-      if math.isclose(gene['MAX_SCORE'], response['maxScore'], abs_tol=0.01):
+      if not max_doc or max_doc['score'] < response['maxScore']:
+        print('Found max doc')
+        max_doc = get_max_score_doc(response['docs'])
         mesh_name = processed['P_NAME']
-        break
+  
+  if max_doc:
+    print('It has max doc')
+    # Get gene family info
+    elapsed_millis = get_current_millis()
+    gene_family_info = None
+    with db.cursor(pymysql.cursors.DictCursor) as cursor:
+      cursor.execute('SELECT * FROM GENES_FAMILY where APPROVED_SYMBOL=%s', (gene['SYMBOL'],))
+      gene_family_info = cursor.fetchone()
+    print('Find gene family time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+    
+    if not mesh_name and not gene_family_info:
+      continue
+    
+    if not gene_family_info:
+      elapsed_millis = get_current_millis()
+      # Send a query to update LUNG_GENES.
+      with db.cursor(pymysql.cursors.DictCursor) as cursor:
+        cursor.execute(
+          'UPDATE LUNG_GENES SET HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s, MESH_NAME="%s" WHERE S_ID=%s',
+          (max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], mesh_name, gene['S_ID'])
+        )
+      db.commit()
+      print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+      continue
+    
+    # Get a name similarity score between MeSH query and HGNC family name.
+    name_score = difflib.SequenceMatcher(None, mesh_name.lower(), gene_family_info['GENE_FAMILY_NAME'].lower()).ratio()
+
+    print('UPDATE LUNG_GENES SET HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s, MESH_NAME="%s", HGNC_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s' % (
+      max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], mesh_name, gene_family_info['GENE_FAMILY_NAME'], name_score, gene['S_ID']))
+
+    elapsed_millis = get_current_millis()
+    # Send a query to update LUNG_GENES.
+    with db.cursor(pymysql.cursors.DictCursor) as cursor:
+      cursor.execute(
+        'UPDATE LUNG_GENES SET HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s, MESH_NAME="%s", HGNC_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s',
+        (max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], mesh_name, gene_family_info['GENE_FAMILY_NAME'], name_score, gene['S_ID'])
+      )
+    db.commit()
+    print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+
+
+
   
   # Get gene family info
   elapsed_millis = get_current_millis()
