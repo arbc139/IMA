@@ -76,7 +76,7 @@ for gene in all_genes:
   print('UPDATE LUNG_GENES SET IS_FAMILY=%d WHERE S_ID=%s' % (
     1 if is_family else 0, gene['S_ID']))
   values.append([1 if is_family else 0, gene['S_ID']])
-"""
+
 elapsed_millis = get_current_millis()
 # Send a query to update LUNG_GENES.
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
@@ -86,4 +86,3 @@ with db.cursor(pymysql.cursors.DictCursor) as cursor:
   )
 db.commit()
 print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-"""
