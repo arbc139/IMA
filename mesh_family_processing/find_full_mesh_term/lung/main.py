@@ -36,6 +36,17 @@ for gene in all_genes:
     processeds = cursor.fetchall()
   print('Find processeds time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   
-  full_mesh_term = max(processeds, key=lambda processed: len(processed['P_NAME']))  
-  print(full_mesh_term)
-  break
+  full_mesh_term = max(processeds, key=lambda processed: len(processed['P_NAME']))['P_NAME']
+  
+  print('UPDATE LUNG_GENES SET MESH_TERM="%s" WHERE S_ID=%s' % (
+    full_mesh_term, gene['S_ID']))
+
+  elapsed_millis = get_current_millis()
+  # Send a query to update LUNG_GENES.
+  with db.cursor(pymysql.cursors.DictCursor) as cursor:
+    cursor.execute(
+      'UPDATE LUNG_GENES SET MESH_TERM="%s" WHERE S_ID=%s',
+      (full_mesh_term, gene['S_ID'])
+    )
+  db.commit()
+  print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
