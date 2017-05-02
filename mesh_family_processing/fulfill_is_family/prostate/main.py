@@ -44,7 +44,7 @@ for gene in all_genes:
   print('Mesh Term:', gene['MESH_TERM'])
   qualifiers = list(filter(lambda qualifier: qualifier['NAME'] == gene['MESH_TERM'], all_qualifiers))
   print('Find qualifier time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-  descriptor = list(filter(lambda descriptor: descriptor['NAME'] == gene['MESH_TERM'], all_descriptors))
+  descriptors = list(filter(lambda descriptor: descriptor['NAME'] == gene['MESH_TERM'], all_descriptors))
   print('Find descriptor time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   
   tree_numbers = None
