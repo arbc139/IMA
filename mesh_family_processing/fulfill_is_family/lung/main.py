@@ -48,9 +48,9 @@ for gene in all_genes:
   
   tree_numbers = None
   if qualifier:
-    tree_numbers = re.escape(eval(qualifier['TREE_NUMBERS']))
+    tree_numbers = eval(qualifier['TREE_NUMBERS'])
   elif descriptor:
-    tree_numbers = re.escape(eval(descriptor['TREE_NUMBERS']))
+    tree_numbers = eval(descriptor['TREE_NUMBERS'])
   else:
     print('There is no mesh term for qualifier and descriptor')
     continue
@@ -59,20 +59,21 @@ for gene in all_genes:
   
   is_family = False
   for tree_number in tree_numbers:
+    escaped_tree_number = re.escape(tree_number)
     all_qualifiers = None
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
-      print('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\..*"' % (tree_number))
-      cursor.execute('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\..*"' % (tree_number))
+      print('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
+      cursor.execute('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
       all_qualifiers = cursor.fetchall()
     all_descriptors = None
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
-      print('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\..*"' % (tree_number))
-      cursor.execute('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\..*"' % (tree_number))
+      print('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
+      cursor.execute('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
       all_descriptors = cursor.fetchall()
     all_supplementals = None
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
-      print('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\..*"' % (tree_number))
-      cursor.execute('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\..*"' % (tree_number))
+      print('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
+      cursor.execute('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\..*"' % (escaped_tree_number))
       all_supplementals = cursor.fetchall()
     if len(all_qualifiers) == 0 and len(all_descriptors) == 0 and len(all_supplementals) == 0:
       is_family = True
