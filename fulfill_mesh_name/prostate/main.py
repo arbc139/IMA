@@ -111,9 +111,7 @@ for gene in all_genes:
       )
     db.commit()
     print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-
-
-
+    continue
   
   # Get gene family info
   elapsed_millis = get_current_millis()
