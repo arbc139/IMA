@@ -38,14 +38,14 @@ for gene in all_genes:
   
   full_mesh_term = max(processeds, key=lambda processed: len(processed['P_NAME']))['P_NAME']
   
-  print('UPDATE PROSTATE_GENES SET MESH_TERM="%s" WHERE S_ID=%s' % (
+  print('UPDATE PROSTATE_GENES SET MESH_TERM=%s WHERE S_ID=%s' % (
     full_mesh_term, gene['S_ID']))
 
   elapsed_millis = get_current_millis()
   # Send a query to update PROSTATE_GENES.
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute(
-      'UPDATE PROSTATE_GENES SET MESH_TERM="%s" WHERE S_ID=%s',
+      'UPDATE PROSTATE_GENES SET MESH_TERM=%s WHERE S_ID=%s',
       (full_mesh_term, gene['S_ID'])
     )
   db.commit()
