@@ -31,24 +31,24 @@ print('Find all genes time:', get_elapsed_seconds(get_current_millis(), elapsed_
 for gene in all_genes:
   elapsed_millis = get_current_millis()
   print('Mesh Term:', gene['MESH_TERM'])
-  qualifiers = None
+  qualifier = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM MESH_QUALIFIER where NAME = %s', (gene['MESH_TERM'],))
-    qualifiers = cursor.fetchall()
-  print('Qualifiers:', qualifiers)
-  print('Find qualifiers time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-  descriptors = None
+    qualifier = cursor.fetchone()
+  print('Qualifier:', qualifier)
+  print('Find qualifier time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+  descriptor = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM MESH_DESCRIPTOR where NAME = %s', (gene['MESH_TERM'],))
-    descriptors = cursor.fetchall()
-  print('Descriptors:', descriptors)
-  print('Find descriptors time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-  supplementals = None
+    descriptor = cursor.fetchone()
+  print('Descriptor:', descriptor)
+  print('Find descriptor time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+  supplemental = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM MESH_SUPPLEMENTAL where NAME = %s', (gene['MESH_TERM'],))
-    supplementals = cursor.fetchall()
-  print('Supplementals:', supplementals)
-  print('Find supplementals time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+    supplemental = cursor.fetchone()
+  print('Supplemental:', supplemental)
+  print('Find supplemental time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   break
   """
   print('UPDATE LUNG_GENES SET MESH_TERM="%s" WHERE S_ID=%s' % (
