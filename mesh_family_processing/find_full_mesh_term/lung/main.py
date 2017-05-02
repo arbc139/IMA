@@ -28,6 +28,7 @@ with db.cursor(pymysql.cursors.DictCursor) as cursor:
 print('Find all genes time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
 # Find full mesh term
+values = []
 for gene in all_genes:
   elapsed_millis = get_current_millis()
   processeds = None
@@ -40,13 +41,14 @@ for gene in all_genes:
   
   print('UPDATE LUNG_GENES SET MESH_TERM=%s WHERE S_ID=%s' % (
     full_mesh_term, gene['S_ID']))
+  values.append([gene['S_ID'], full_mesh_term])
 
-  elapsed_millis = get_current_millis()
-  # Send a query to update LUNG_GENES.
-  with db.cursor(pymysql.cursors.DictCursor) as cursor:
-    cursor.execute(
-      'UPDATE LUNG_GENES SET MESH_TERM=%s WHERE S_ID=%s',
-      (full_mesh_term, gene['S_ID'])
-    )
-  db.commit()
-  print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+elapsed_millis = get_current_millis()
+# Send a query to update LUNG_GENES.
+with db.cursor(pymysql.cursors.DictCursor) as cursor:
+  cursor.executemany(
+    'INSERT INTO LUNG_GENES (S_ID, MESH_TERM) VALUES (%s, %s) ON DUPLICATE KEY UPDATE MESH_TERM=VALUES(MESH_TERM)',
+    values
+  )
+db.commit()
+print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
