@@ -25,16 +25,16 @@ for record in records:
   for tree_number_record in record.findall('TreeNumberList'):
     tree_numbers.append(tree_number_record.findtext('TreeNumber'))
   
-  print('INSERT INTO MESH_DESCRIPTOR (UID, NAME, TREE_NUMBERS) VALUES (%s, "%s", "%s")' % (
+  print('INSERT INTO MESH_DESCRIPTOR (UID, NAME, TREE_NUMBERS) VALUES (%s, %s, %s)' % (
     uid, name, str(tree_numbers)))
   
-  rows.append([uid, name, tree_numbers])
+  rows.append([uid, name, str(tree_numbers)])
 
 elapsed_millis = get_current_millis()
 # Send a query to insert MESH_DESCRIPTOR.
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
   cursor.executemany(
-    'INSERT INTO MESH_DESCRIPTOR (UID, NAME, TREE_NUMBERS) VALUES (%s, "%s", "%s")',
+    'INSERT INTO MESH_DESCRIPTOR (UID, NAME, TREE_NUMBERS) VALUES (%s, %s, %s)',
     rows
   )
 db.commit()

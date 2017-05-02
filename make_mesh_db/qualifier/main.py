@@ -17,6 +17,7 @@ elapsed_millis = get_current_millis()
 records = root.findall('QualifierRecord')
 print('Find all records time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
+rows = []
 for record in records:
   uid = record.findtext('QualifierUI')
   name = record.find('QualifierName').findtext('String')
@@ -24,16 +25,17 @@ for record in records:
   for tree_number_record in record.findall('TreeNumberList'):
     tree_numbers.append(tree_number_record.findtext('TreeNumber'))
   
-  print('INSERT INTO MESH_QUALIFIER (UID, NAME, TREE_NUMBERS) VALUES (%s, "%s", "%s") ON DUPLICATE KEY UPDATE NAME="%s", TREE_NUMBERS="%s"' % (
-    uid, name, str(tree_numbers), name, str(tree_numbers)))
-
-  elapsed_millis = get_current_millis()
-  # Send a query to insert MESH_QUALIFIER.
-  with db.cursor(pymysql.cursors.DictCursor) as cursor:
-    cursor.execute(
-      'INSERT INTO MESH_QUALIFIER (UID, NAME, TREE_NUMBERS) VALUES (%s, "%s", "%s") ON DUPLICATE KEY UPDATE NAME="%s", TREE_NUMBERS="%s"',
-      (uid, name, str(tree_numbers), name, str(tree_numbers))
-    )
-  db.commit()
-  print('Insert mesh db time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+  print('INSERT INTO MESH_QUALIFIER (UID, NAME, TREE_NUMBERS) VALUES (%s, %s, %s)' % (
+    uid, name, str(tree_numbers)))
   
+  rows.append([uid, name, str(tree_numbers)])
+
+elapsed_millis = get_current_millis()
+# Send a query to insert MESH_QUALIFIER.
+with db.cursor(pymysql.cursors.DictCursor) as cursor:
+  cursor.executemany(
+    'INSERT INTO MESH_QUALIFIER (UID, NAME, TREE_NUMBERS) VALUES (%s, %s, %s)',
+    rows
+  )
+db.commit()
+print('Insert mesh db time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
