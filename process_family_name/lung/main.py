@@ -3,6 +3,7 @@
 import difflib
 import math
 import pymysql
+import re
 import sys
 import time
 
@@ -30,7 +31,7 @@ for gene in all_genes:
   if not gene['HGNC_FAMILY_NAME'] or not '|' in gene['HGNC_FAMILY_NAME']:
     continue
   
-  family_names = gene['HGNC_FAMILY_NAME'].split('|')
+  family_names = re.sub('\'', '', gene['HGNC_FAMILY_NAME']).split('|')
   print('gene:', gene)
   print('splitted:', family_names)
   break
