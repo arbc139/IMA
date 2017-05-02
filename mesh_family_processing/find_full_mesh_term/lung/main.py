@@ -36,6 +36,6 @@ for gene in all_genes:
     processeds = cursor.fetchall()
   print('Find processeds time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   
-  full_mesh_term = max(processeds, lambda processed: len(processed['P_NAME']))  
+  full_mesh_term = max(processeds, key=lambda processed: len(processed['P_NAME']))  
   print(full_mesh_term)
   break
