@@ -41,13 +41,13 @@ for gene in all_genes:
   
   print('UPDATE PROSTATE_GENES SET MESH_TERM=%s WHERE S_ID=%s' % (
     full_mesh_term, gene['S_ID']))
-  values.append([gene['S_ID'], full_mesh_term])
+  values.append([full_mesh_term, gene['S_ID']])
 
 elapsed_millis = get_current_millis()
-# Send a query to update LUNG_GENES.
+# Send a query to update PROSTATE_GENES.
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
   cursor.executemany(
-    'INSERT INTO LUNG_GENES (S_ID, MESH_TERM) VALUES (%s, %s) ON DUPLICATE KEY UPDATE MESH_TERM=VALUES(MESH_TERM)',
+    'UPDATE PROSTATE_GENES SET MESH_TERM=%s WHERE S_ID=%s',
     values
   )
 db.commit()
