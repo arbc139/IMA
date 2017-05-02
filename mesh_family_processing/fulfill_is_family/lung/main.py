@@ -28,29 +28,30 @@ with db.cursor(pymysql.cursors.DictCursor) as cursor:
   all_genes = cursor.fetchall()
 print('Find all genes time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
+all_qualifiers = None
+with db.cursor(pymysql.cursors.DictCursor) as cursor:
+  cursor.execute('SELECT * FROM MESH_QUALIFIER')
+  all_qualifiers = cursor.fetchall()
+all_descriptors = None
+with db.cursor(pymysql.cursors.DictCursor) as cursor:
+  cursor.execute('SELECT * FROM MESH_DESCRIPTOR')
+  all_descriptors = cursor.fetchall()
+
 # Find with checking family
 values = []
 for gene in all_genes:
   elapsed_millis = get_current_millis()
   print('Mesh Term:', gene['MESH_TERM'])
-  qualifier = None
-  with db.cursor(pymysql.cursors.DictCursor) as cursor:
-    cursor.execute('SELECT * FROM MESH_QUALIFIER where NAME = %s', (gene['MESH_TERM'],))
-    qualifier = cursor.fetchone()
-  print('Qualifier:', qualifier)
+  qualifiers = list(filter(lambda qualifier: qualifier['NAME'] == gene['MESH_TERM'], all_qualifiers))
   print('Find qualifier time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-  descriptor = None
-  with db.cursor(pymysql.cursors.DictCursor) as cursor:
-    cursor.execute('SELECT * FROM MESH_DESCRIPTOR where NAME = %s', (gene['MESH_TERM'],))
-    descriptor = cursor.fetchone()
-  print('Descriptor:', descriptor)
+  descriptor = list(filter(lambda descriptor: descriptor['NAME'] == gene['MESH_TERM'], all_descriptors))
   print('Find descriptor time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   
   tree_numbers = None
-  if qualifier:
-    tree_numbers = eval(qualifier['TREE_NUMBERS'])
-  elif descriptor:
-    tree_numbers = eval(descriptor['TREE_NUMBERS'])
+  if len(qualifiers) == 1:
+    tree_numbers = eval(qualifiers[0]['TREE_NUMBERS'])
+  elif len(descriptors) == 1:
+    tree_numbers = eval(descriptors[0]['TREE_NUMBERS'])
   else:
     print('There is no mesh term for qualifier and descriptor')
     continue
@@ -60,30 +61,22 @@ for gene in all_genes:
   is_family = False
   for tree_number in tree_numbers:
     escaped_tree_number = re.escape(tree_number)
-    all_qualifiers = None
-    with db.cursor(pymysql.cursors.DictCursor) as cursor:
-      print('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
-      cursor.execute('SELECT * FROM MESH_QUALIFIER where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
-      all_qualifiers = cursor.fetchall()
-    all_descriptors = None
-    with db.cursor(pymysql.cursors.DictCursor) as cursor:
-      print('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
-      cursor.execute('SELECT * FROM MESH_DESCRIPTOR where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
-      all_descriptors = cursor.fetchall()
-    all_supplementals = None
-    with db.cursor(pymysql.cursors.DictCursor) as cursor:
-      print('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
-      cursor.execute('SELECT * FROM MESH_SUPPLEMENTAL where TREE_NUMBERS REGEXP ".*%s\\..*"' % (escaped_tree_number))
-      all_supplementals = cursor.fetchall()
-    if len(all_qualifiers) > 1 or len(all_descriptors) > 1 or len(all_supplementals) > 1:
+    qualifiers = list(filter(
+      lambda qualifier: re.match('.*%s\\..*' % (escaped_tree_number), qualifier['TREE_NUMBERS']),
+      all_qualifiers
+    ))
+    descriptors = list(filter(
+      lambda descriptor: re.match('.*%s\\..*' % (escaped_tree_number), descriptor['TREE_NUMBERS']),
+      all_descriptors
+    ))
+    if len(all_qualifiers) > 1 or len(all_descriptors) > 1:
       is_family = True
       break
 
   print('UPDATE LUNG_GENES SET IS_FAMILY=%d WHERE S_ID=%s' % (
     1 if is_family else 0, gene['S_ID']))
   values.append([1 if is_family else 0, gene['S_ID']])
-
-
+"""
 elapsed_millis = get_current_millis()
 # Send a query to update LUNG_GENES.
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
@@ -93,3 +86,4 @@ with db.cursor(pymysql.cursors.DictCursor) as cursor:
   )
 db.commit()
 print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+"""
