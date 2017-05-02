@@ -4,6 +4,7 @@ from urllib.parse import quote
 import difflib
 import math
 import pymysql
+import re
 import sys
 import time
 
@@ -47,9 +48,9 @@ for gene in all_genes:
   
   tree_numbers = None
   if qualifier:
-    tree_numbers = eval(qualifier['TREE_NUMBERS'])
+    tree_numbers = re.escape(eval(qualifier['TREE_NUMBERS']))
   elif descriptor:
-    tree_numbers = eval(descriptor['TREE_NUMBERS'])
+    tree_numbers = re.escape(eval(descriptor['TREE_NUMBERS']))
   else:
     print('There is no mesh term for qualifier and descriptor')
     continue
