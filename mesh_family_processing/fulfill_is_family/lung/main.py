@@ -30,20 +30,24 @@ print('Find all genes time:', get_elapsed_seconds(get_current_millis(), elapsed_
 # Find with checking family
 for gene in all_genes:
   elapsed_millis = get_current_millis()
+  print('Mesh Term:', gene['MESH_TERM'])
   qualifiers = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM MESH_QUALIFIER where NAME = %s', (gene['MESH_TERM'],))
     qualifiers = cursor.fetchall()
+  print('Qualifiers:', qualifiers)
   print('Find qualifiers time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   descriptors = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM MESH_DESCRIPTOR where NAME = %s', (gene['MESH_TERM'],))
     processeds = cursor.fetchall()
+  print('Descriptors:', descriptors)
   print('Find descriptors time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   supplementals = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute('SELECT * FROM MESH_SUPPLEMENTAL where NAME = %s', (gene['MESH_TERM'],))
     supplementals = cursor.fetchall()
+  print('Supplementals:', supplementals)
   print('Find supplementals time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   break
   """
