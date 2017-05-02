@@ -34,23 +34,24 @@ for gene in all_genes:
   family_names = re.sub('\'', '', gene['HGNC_FAMILY_NAME']).split('|')
   print('gene:', gene)
   print('splitted:', family_names)
-  break
-    
-  """
-  # Get a name similarity score between MeSH query and HGNC family name.
-  name_score = difflib.SequenceMatcher(None, processed['P_NAME'].lower(), gene_family_info['GENE_FAMILY_NAME'].lower()).ratio()
-
-  print('UPDATE LUNG_GENES SET MESH_NAME="%s", HGNC_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s' % (
-    processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID']))
-
+  
+  max_name_score = 0
+  for family_name in family_names:
+    # Get a name similarity score between MeSH query and HGNC family name.
+    name_score = difflib.SequenceMatcher(
+      None,
+      re.sub('\'', '', gene['MESH_NAME']).lower(),
+      family_name.lower()
+    ).ratio()
+    if max_name_score < name_score:
+      max_name_score = name_score
+  
   elapsed_millis = get_current_millis()
   # Send a query to update LUNG_GENES.
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute(
-      'UPDATE LUNG_GENES SET MESH_NAME="%s", HGNC_FAMILY_NAME="%s", NAME_SCORE=%s WHERE S_ID=%s',
-      (processed['P_NAME'], gene_family_info['GENE_FAMILY_NAME'], name_score, processed['S_ID'])
+      'UPDATE LUNG_GENES SET NAME_SCORE=%s WHERE S_ID=%s',
+      (max_name_score, gene['S_ID'])
     )
   db.commit()
   print('Update gene time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-  """
-
