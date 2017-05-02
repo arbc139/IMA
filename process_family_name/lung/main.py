@@ -27,11 +27,11 @@ with db.cursor(pymysql.cursors.DictCursor) as cursor:
 print('Find all genes time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
 for gene in all_genes:
-  if not gene['HGNC_FAMILY_NAME'] or '|' in gene['HGNC_FAMILY_NAME']:
+  if not gene['HGNC_FAMILY_NAME'] or not '|' in gene['HGNC_FAMILY_NAME']:
     continue
   
   family_names = gene['HGNC_FAMILY_NAME'].split('|')
-  print('HGNC_FAMILY_NAME:', gene['HGNC_FAMILY_NAME'])
+  print('gene:', gene)
   print('splitted:', family_names)
   break
     
