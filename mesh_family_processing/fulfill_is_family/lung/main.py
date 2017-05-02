@@ -4,6 +4,7 @@ from urllib.parse import quote
 import difflib
 import math
 import pymysql
+import re
 import sys
 import time
 
