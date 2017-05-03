@@ -36,9 +36,12 @@ print('Find type genes time:', get_elapsed_seconds(get_current_millis(), elapsed
 # Find with checking family
 values = []
 for gene in all_genes:
+  if not re.match('\'.*\'', gene[COLUMN_NAME]):
+    continue
+
   print('UPDATE PROSTATE_GENES SET %s=%s WHERE S_ID=%s' % (
-    COLUMN_NAME, re.sub('\'', '', gene[COLUMN_NAME]), gene['S_ID']))
-  values.append([re.sub('\'', '', gene[COLUMN_NAME]), gene['S_ID']])
+    COLUMN_NAME, gene[COLUMN_NAME][1:-1], gene['S_ID']))
+  values.append([gene[COLUMN_NAME][1:-1], gene['S_ID']])
 
 elapsed_millis = get_current_millis()
 # Send a query to update PROSTATE_GENES.
