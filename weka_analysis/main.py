@@ -21,7 +21,7 @@ weka_manager.normalize()
 
 analyze_result = weka_manager.analyze()
 
-with open(OUTPUT_FILE, 'w') as csv_file:
+with open(OUTPUT_FILE, 'w+') as csv_file:
   csv_manager = CsvManager(csv_file, ['First', 'Second', 'Score'])
   for relationship, score in analyze_result.items():
     csv_manager.write_row({
