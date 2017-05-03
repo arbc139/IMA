@@ -25,15 +25,15 @@ class WekaManager():
     
     for weka in self.weka_objects:
       # Normalize conf
-      weka.conf = (weka.conf - conf_min) / (conf_max - conf_min)
+      weka.conf = (weka.conf - conf_min) / (conf_max - conf_min) if conf_max != conf_min else 1
       # Normalize lift
-      weka.lift = (weka.lift - lift_min) / (lift_max - lift_min)
+      weka.lift = (weka.lift - lift_min) / (lift_max - lift_min) if lift_max != lift_min else 1
       # Normalize lev
-      weka.lev = (weka.lev - lev_min) / (lev_max - lev_min)
+      weka.lev = (weka.lev - lev_min) / (lev_max - lev_min) if lev_max != lev_min else 1
       # Normalize conv
-      weka.conv = (weka.conv - conv_min) / (conv_max - conv_min)
+      weka.conv = (weka.conv - conv_min) / (conv_max - conv_min) if conv_max != conv_min else 1
       # Normalize unknown
-      weka.unknown = (weka.unknown - unknown_min) / (unknown_max - unknown_min)
+      weka.unknown = (weka.unknown - unknown_min) / (unknown_max - unknown_min) if unknown_max != unknown_min else 1
     
   def analyze(self):
     results = dict()
