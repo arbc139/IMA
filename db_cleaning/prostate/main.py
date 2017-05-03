@@ -33,7 +33,7 @@ values = []
 for gene in all_genes:
   print('UPDATE PROSTATE_GENES SET SYMBOL=%s WHERE S_ID=%s' % (
     re.sub('\'', '', gene['SYMBOL']), gene['S_ID']))
-  values.append([re.sub('\'', '', gene['SYMBOL']), gene['S_ID'])])
+  values.append([re.sub('\'', '', gene['SYMBOL']), gene['S_ID']])
 
 elapsed_millis = get_current_millis()
 # Send a query to update PROSTATE_GENES.
