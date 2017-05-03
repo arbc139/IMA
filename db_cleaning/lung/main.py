@@ -37,8 +37,8 @@ print('Find type genes time:', get_elapsed_seconds(get_current_millis(), elapsed
 values = []
 for gene in all_genes:
   print('UPDATE LUNG_GENES SET %s=%s WHERE S_ID=%s' % (
-    COLUMN_NAME, re.sub('\'', '', gene['SYMBOL']), gene['S_ID']))
-  values.append([re.sub('\'', '', gene['SYMBOL']), gene['S_ID']])
+    COLUMN_NAME, re.sub('\'', '', gene[COLUMN_NAME]), gene['S_ID']))
+  values.append([re.sub('\'', '', gene[COLUMN_NAME]), gene['S_ID']])
 
 elapsed_millis = get_current_millis()
 # Send a query to update LUNG_GENES.
