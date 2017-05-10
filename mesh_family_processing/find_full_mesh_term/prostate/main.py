@@ -31,13 +31,13 @@ print('Find all genes time:', get_elapsed_seconds(get_current_millis(), elapsed_
 values = []
 for gene in all_genes:
   elapsed_millis = get_current_millis()
-  processeds = None
+  processed = None
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
-    cursor.execute('SELECT * FROM PROSTATE_PROCESSED where S_ID = %s', (gene['S_ID'],))
-    processeds = cursor.fetchall()
+    cursor.execute('SELECT * FROM PROSTATE_SUBSTANCE where S_ID = %s', (gene['S_ID'],))
+    processed = cursor.fetchone()
   print('Find processeds time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   
-  full_mesh_term = max(processeds, key=lambda processed: len(processed['P_NAME']))['P_NAME']
+  full_mesh_term = processed['P_NAME']
   
   print('UPDATE PROSTATE_GENES SET MESH_TERM=%s WHERE S_ID=%s' % (
     full_mesh_term, gene['S_ID']))
