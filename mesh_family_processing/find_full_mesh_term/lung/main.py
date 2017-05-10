@@ -37,7 +37,7 @@ for gene in all_genes:
     processed = cursor.fetchone()
   print('Find processeds time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   
-  full_mesh_term = processed['P_NAME']
+  full_mesh_term = processed['S_NAME']
   
   print('UPDATE LUNG_GENES SET MESH_TERM=%s WHERE S_ID=%s' % (
     full_mesh_term, gene['S_ID']))
