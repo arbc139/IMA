@@ -22,8 +22,8 @@ elapsed_millis = get_current_millis()
 # Get all genes in DB.
 all_genes = None
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
-  query = 'SELECT * FROM PROSTATE_GENES WHERE IS_FAMILY IS NULL ORDER BY S_ID' if START_S_ID is None \
-    else 'SELECT * FROM PROSTATE_GENES WHERE IS_FAMILY IS NULL AND S_ID > %s ORDER BY S_ID' % (START_S_ID)
+  query = 'SELECT * FROM PROSTATE_GENES ORDER BY S_ID' if START_S_ID is None \
+    else 'SELECT * FROM PROSTATE_GENES WHERE S_ID > %s ORDER BY S_ID' % (START_S_ID)
   cursor.execute(query)
   all_genes = cursor.fetchall()
 print('Find all genes time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
