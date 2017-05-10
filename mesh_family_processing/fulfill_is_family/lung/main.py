@@ -36,6 +36,10 @@ all_descriptors = None
 with db.cursor(pymysql.cursors.DictCursor) as cursor:
   cursor.execute('SELECT * FROM MESH_DESCRIPTOR')
   all_descriptors = cursor.fetchall()
+all_supplementals = None
+with db.cursor(pymysql.cursors.DictCursor) as cursor:
+  cursor.execute('SELECT * FROM MESH_SUPPLEMENTAL')
+  all_supplementals = cursor.fetchall()
 
 # Find with checking family
 values = []
@@ -43,15 +47,17 @@ for gene in all_genes:
   elapsed_millis = get_current_millis()
   print('Mesh Term:', gene['MESH_TERM'])
   qualifiers = list(filter(lambda qualifier: qualifier['NAME'] == gene['MESH_TERM'], all_qualifiers))
-  print('Find qualifier time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
   descriptors = list(filter(lambda descriptor: descriptor['NAME'] == gene['MESH_TERM'], all_descriptors))
-  print('Find descriptor time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+  supplementals = list(filter(lambda supplemental: supplemental['NAME'] == gene['MESH_TERM'], all_supplementals))
   
   tree_numbers = None
+  is_supplemental = False
   if len(qualifiers) == 1:
     tree_numbers = eval(qualifiers[0]['TREE_NUMBERS'])
   elif len(descriptors) == 1:
     tree_numbers = eval(descriptors[0]['TREE_NUMBERS'])
+  elif len(supplementals) == 1:
+    is_supplemental = True
   else:
     print('There is no mesh term for qualifier and descriptor')
     continue
@@ -59,19 +65,20 @@ for gene in all_genes:
   print('Tree numbers:', tree_numbers)
   
   is_family = False
-  for tree_number in tree_numbers:
-    escaped_tree_number = re.escape(tree_number)
-    qualifiers = list(filter(
-      lambda qualifier: re.match('.*%s\\..*' % (escaped_tree_number), qualifier['TREE_NUMBERS']),
-      all_qualifiers
-    ))
-    descriptors = list(filter(
-      lambda descriptor: re.match('.*%s\\..*' % (escaped_tree_number), descriptor['TREE_NUMBERS']),
-      all_descriptors
-    ))
-    if len(qualifiers) != 0 or len(descriptors) != 0:
-      is_family = True
-      break
+  if not is_supplemental:
+    for tree_number in tree_numbers:
+      escaped_tree_number = re.escape(tree_number)
+      qualifiers = list(filter(
+        lambda qualifier: re.match('.*%s\\..*' % (escaped_tree_number), qualifier['TREE_NUMBERS']),
+        all_qualifiers
+      ))
+      descriptors = list(filter(
+        lambda descriptor: re.match('.*%s\\..*' % (escaped_tree_number), descriptor['TREE_NUMBERS']),
+        all_descriptors
+      ))
+      if len(qualifiers) != 0 or len(descriptors) != 0:
+        is_family = True
+        break
 
   print('UPDATE LUNG_GENES SET IS_FAMILY=%d WHERE S_ID=%s' % (
     1 if is_family else 0, gene['S_ID']))
