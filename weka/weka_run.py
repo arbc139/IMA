@@ -3,18 +3,22 @@ import re
 import sys
 import pymysql
 
-f_2 = open('lung_gene.arff','w')
+max_score = sys.argv[1]
+disease_name = sys.argv[2]
+filename = disease_name+"_"+max_score+".arff"
+f_2 = open(filename,'w')
 
 conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8')
  
 curs = conn.cursor()
-query = "SELECT  DISTINCT SYMBOL FROM LUNG_GENES WHERE MAX_SCORE > 1.5 "
+query = "SELECT  DISTINCT SYMBOL FROM "+disease_name+"_GENES WHERE MAX_SCORE > " + max_score
 curs.execute(query)
 symbols = curs.fetchall()
-query = "SELECT  DISTINCT PM_ID FROM LUNG_GENES"
+query = "SELECT  DISTINCT PM_ID FROM "+disease_name+"_GENES"
 curs.execute(query)
 pm_ids = curs.fetchall()
-f_2.write('@relation LUNG_CANCER.symbolic'+'\n\n')
+relation_name = "@relation "+disease_name+".symbolic\n\n"
+f_2.write(relation_name)
 for sym in symbols:
 	f_2.write('@attribute '+sym[0]+' {0,1}\n')
 f_2.write('@data\n')
@@ -22,7 +26,7 @@ f_2.write('@data\n')
 thesis = []
 for pm_id in pm_ids:
 	del thesis[:] 
-	query = "SELECT  SYMBOL FROM LUNG_GENES WHERE  PM_ID="+str(pm_id[0])+" AND MAX_SCORE > 1.5;" 
+	query = "SELECT  SYMBOL FROM "+disease_name+"_GENES WHERE  IS_FAMILY = 0 AND PM_ID="+str(pm_id[0])+" AND MAX_SCORE > ;" + max_score 
 	curs.execute(query)
 	match = curs.fetchall()
 	#print match
