@@ -26,7 +26,7 @@ f_2.write('@data\n')
 thesis = []
 for pm_id in pm_ids:
 	del thesis[:] 
-	query = "SELECT  SYMBOL FROM "+disease_name+"_GENES WHERE  IS_FAMILY = 0 AND PM_ID="+str(pm_id[0])+" AND MAX_SCORE > ;" + max_score 
+	query = "SELECT  SYMBOL FROM "+disease_name+"_GENES WHERE  IS_FAMILY = 0 AND PM_ID="+str(pm_id[0])+" AND MAX_SCORE > " + max_score 
 	curs.execute(query)
 	match = curs.fetchall()
 	#print match
