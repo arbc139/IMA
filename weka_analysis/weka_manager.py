@@ -3,6 +3,10 @@ class WekaManager():
 
   def __init__(self, weka_objects):
     self.weka_objects = weka_objects
+  
+  # Remove weka object that have lift value less than 1.
+  def filter_objects(self):
+    self.weka_objects = list(filter(lambda weka: weka.lift > 1, self.weka_objects))
 
   # (x - min(x)) / (max(x) - min(x))
   def normalize(self):

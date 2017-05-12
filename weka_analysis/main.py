@@ -17,6 +17,7 @@ with open(INPUT_FILE, 'r') as weka_file:
   weka_objects = parser.parse()
 
 weka_manager = WekaManager(weka_objects)
+weka_manager.filter_objects()
 weka_manager.normalize()
 
 analyze_result = weka_manager.analyze()
