@@ -39,7 +39,7 @@ class WekaManager():
     results = dict()
 
     for weka in self.weka_objects:
-      score = (weka.conf + weka.lift) / (len(weka.first_genes) * len(weka.second_genes))
+      score = weka.lift / (len(weka.first_genes) * len(weka.second_genes))
       for first_gene in weka.first_genes:
         for second_gene in weka.second_genes:
           relationship = (first_gene, second_gene)
