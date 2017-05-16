@@ -75,7 +75,7 @@ hgnc_http = HttpWrapper(hgnc_search_uri)
 def get_max_score_doc(result_docs):
   return max(result_docs, key = lambda doc: doc['score'])
 
-def is_family(mesh_term):
+def check_is_family(mesh_term):
   qualifiers = list(filter(lambda qualifier: qualifier['NAME'] == mesh_term, all_qualifiers))
   descriptors = list(filter(lambda descriptor: descriptor['NAME'] == mesh_term, all_descriptors))
   supplementals = list(filter(lambda supplemental: supplemental['NAME'] == mesh_term, all_supplementals))
@@ -129,7 +129,7 @@ for processed in all_processeds:
     continue
   mesh_term = substance['S_NAME']
   
-  is_family = is_family(mesh_term)
+  is_family = check_is_family(mesh_term)
   if is_family is None:
     continue
 
