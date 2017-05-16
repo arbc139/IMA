@@ -3114,4 +3114,3 @@
 [<nameofsubstance ui="D015342">DNA Probes</nameofsubstance>]	[<pmid version="1">1811048</pmid>]
 [<nameofsubstance ui="D000907">Antibodies, Bacterial</nameofsubstance>]	[<pmid version="1">2125313</pmid>]
 [<nameofsubstance ui="D007376">Interleukin-2</nameofsubstance>]	[<pmid version="1">2125313</pmid>]
-[<nameofsubstance ui="D014409">Tumor Necrosis Factor-alpha</nameofsubstance>]	[<pmid
