@@ -139,11 +139,11 @@ for processed in all_processeds:
   query = 'INSERT INTO %s ' % (options.gene_table) \
     + '(S_ID, PM_ID, HGNC_ID, SYMBOL, MAX_SCORE, SEARCH_QUERY, MESH_TERM, IS_FAMILY) ' \
     + 'VALUES ' \
-    + '(%s, %s, %s, %s, %s, %s, %s, %d) ' % (
+    + '(%s, %s, "%s", "%s", %s, "%s", "%s", %d) ' % (
       processed['S_ID'], processed['PM_ID'], max_doc['hgnc_id'], max_doc['symbol'],
       max_doc['score'], processed['P_NAME'], mesh_term, 1 if is_family else 0) \
     + 'ON DUPLICATE KEY UPDATE ' \
-    + 'HGNC_ID=%s, SYMBOL=%s, MAX_SCORE=%s, SEARCH_QUERY=%s, MESH_TERM=%s, IS_FAMILY=%d' % (
+    + 'HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s, SEARCH_QUERY="%s", MESH_TERM="%s", IS_FAMILY=%d' % (
       max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], processed['P_NAME'],
       mesh_term, 1 if is_family else 0)
   print(query)
