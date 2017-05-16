@@ -9,12 +9,12 @@ curs = conn.cursor()
 
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 pmid_reg = re.compile('(?<=\">)[^<]*(?=\<\/pmid)')
-f = open('lung_genetic_mesh.txt')
+f = open('periodontitis_mesh.txt')
 lines = f.readlines()
 for line in lines:
 	name = name_reg.findall(line)
 	pmid = pmid_reg.findall(line)
-	query = "INSERT INTO LUNG_SUBSTANCE (PM_ID, S_NAME) VALUES (%s, %s)"
+	query = "INSERT INTO PERIO_SUBSTANCE (PM_ID, S_NAME) VALUES (%s, %s)"
 	curs.execute(query,(pmid,name))
 	conn.commit()
 	"""name_list = name[0].split(", ")
