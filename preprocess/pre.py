@@ -17,10 +17,11 @@ for line in lines:
 	pmid = pmid_reg.findall(line)
 	query = "INSERT INTO PERIO_SUBSTANCE (PM_ID, S_NAME) VALUES (%s, %s)"
 	print i
-	i++
 	print name
 	print pmid
 	print '\n'
+	i++
+
 	curs.execute(query,(pmid,name))
 	conn.commit()
 	"""name_list = name[0].split(", ")
