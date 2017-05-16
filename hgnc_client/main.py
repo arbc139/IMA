@@ -129,7 +129,7 @@ for processed in all_processeds:
     continue
   mesh_term = substance['S_NAME']
   
-  is_family = 1 if is_family(mesh_term) else 0
+  is_family = is_family(mesh_term)
   if is_family is None:
     continue
 
@@ -141,11 +141,11 @@ for processed in all_processeds:
     + 'VALUES ' \
     + '(%s, %s, %s, %s, %s, %s, %s, %d) ' % (
       processed['S_ID'], processed['PM_ID'], max_doc['hgnc_id'], max_doc['symbol'],
-      max_doc['score'], processed['P_NAME'], mesh_term, is_family) \
+      max_doc['score'], processed['P_NAME'], mesh_term, 1 if is_family else 0) \
     + 'ON DUPLICATE KEY UPDATE ' \
     + 'HGNC_ID=%s, SYMBOL=%s, MAX_SCORE=%s, SEARCH_QUERY=%s, MESH_TERM=%s, IS_FAMILY=%d' % (
       max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], processed['P_NAME'],
-      mesh_term, is_family)
+      mesh_term, 1 if is_family else 0)
   print(query)
 
   """
