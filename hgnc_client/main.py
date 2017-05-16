@@ -3,6 +3,7 @@
 from http_wrapper import HttpWrapper
 from urllib.parse import quote
 import pymysql
+import re
 import sys
 import time
 
