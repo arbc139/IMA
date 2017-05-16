@@ -87,7 +87,7 @@ def is_family(mesh_term):
     return False
   else:
     print('There is no mesh term for qualifier and descriptor')
-    continue
+    return None
   
   for tree_number in tree_numbers:
     escaped_tree_number = re.escape(tree_number)
@@ -128,6 +128,8 @@ for processed in all_processeds:
   mesh_term = substance['S_NAME']
   
   is_family = 1 if is_family(mesh_term) else 0
+  if is_family is None:
+    continue
 
   sid_hgnc_map[processed['S_ID']] = response['maxScore']
   max_doc = get_max_score_doc(response['docs'])
