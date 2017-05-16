@@ -20,7 +20,7 @@ for line in lines:
 	print name
 	print pmid
 	print '\n'
-	i++
+	i=i+1
 
 	curs.execute(query,(pmid,name))
 	conn.commit()
