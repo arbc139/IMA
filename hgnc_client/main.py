@@ -143,11 +143,10 @@ for processed in all_processeds:
       processed['S_ID'], processed['PM_ID'], max_doc['hgnc_id'], max_doc['symbol'],
       max_doc['score'], processed['P_NAME'], mesh_term, is_family) \
     + 'ON DUPLICATE KEY UPDATE ' \
-    + 'HGNC_ID=%s, SYMBOL=%s, MAX_SCORE=%s, SEARCH_QUERY=%s, MESH_TERM, IS_FAMILY=%d' % (
+    + 'HGNC_ID=%s, SYMBOL=%s, MAX_SCORE=%s, SEARCH_QUERY=%s, MESH_TERM=%s, IS_FAMILY=%d' % (
       max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], processed['P_NAME'],
       mesh_term, is_family)
   print(query)
-  break
 
   """
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
