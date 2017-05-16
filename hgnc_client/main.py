@@ -132,18 +132,16 @@ for processed in all_processeds:
   sid_hgnc_map[processed['S_ID']] = response['maxScore']
   max_doc = get_max_score_doc(response['docs'])
 
-  query = (
-    'INSERT INTO %s ' % (options.gene_table)
-    '(S_ID, PM_ID, HGNC_ID, SYMBOL, MAX_SCORE, SEARCH_QUERY, MESH_TERM, IS_FAMILY) '
-    'VALUES '
+  query = 'INSERT INTO %s ' % (options.gene_table) \
+    '(S_ID, PM_ID, HGNC_ID, SYMBOL, MAX_SCORE, SEARCH_QUERY, MESH_TERM, IS_FAMILY) ' \
+    'VALUES ' \
     '(%s, %s, %s, %s, %s, %s, %s, %s, %d) ' % (
       processed['S_ID'], processed['PM_ID'], max_doc['hgnc_id'], max_doc['symbol'],
-      max_doc['score'], processed['P_NAME'], mesh_term, is_family)
-    'ON DUPLICATE KEY UPDATE '
+      max_doc['score'], processed['P_NAME'], mesh_term, is_family) \
+    'ON DUPLICATE KEY UPDATE ' \
     'HGNC_ID=%s, SYMBOL=%s, MAX_SCORE=%s, SEARCH_QUERY=%s, MESH_TERM, IS_FAMILY=%d' % (
       max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], processed['P_NAME'],
       mesh_term, is_family)
-  )
   print(query)
   break
 
