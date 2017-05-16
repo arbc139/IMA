@@ -11,16 +11,10 @@ name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 pmid_reg = re.compile('(?<=\">)[^<]*(?=\<\/pmid)')
 f = open('dentalcaries_mesh.txt')
 lines = f.readlines()
-i = 0 
 for line in lines:
 	name = name_reg.findall(line)
 	pmid = pmid_reg.findall(line)
 	query = "INSERT INTO CARIES_SUBSTANCE (PM_ID, S_NAME) VALUES (%s, %s)"
-	print i
-	print name
-	print pmid
-	print '\n'
-	i=i+1
 
 	curs.execute(query,(pmid,name))
 	conn.commit()

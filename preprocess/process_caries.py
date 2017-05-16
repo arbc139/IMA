@@ -57,7 +57,7 @@ def others(name):
 	
 
 if __name__ == '__main__':
-	query = "SELECT * FROM PERIO_SUBSTANCE"
+	query = "SELECT * FROM CARIES_SUBSTANCE"
 	curs.execute(query)
 	rows = curs.fetchall()
 	for row in rows :
@@ -76,6 +76,6 @@ if __name__ == '__main__':
 			else:
 				others(name)
 		for elm in substance_replace:
-			query = "INSERT INTO PERIO_PROCESSED (S_ID, PM_ID,P_NAME) VALUES (%s, %s,%s)"	
+			query = "INSERT INTO CARIES_PROCESSED (S_ID, PM_ID,P_NAME) VALUES (%s, %s,%s)"	
 			curs.execute(query,(row[0],row[1],elm))
 			conn.commit()
