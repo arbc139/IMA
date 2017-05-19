@@ -1,1 +1,1 @@
-Hello! This is capstone page.
+Hello! This is capstone page!
