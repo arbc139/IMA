@@ -43,18 +43,28 @@ class WekaManager():
     results = dict()
 
     for weka in self.weka_objects:
-      score = weka.lift / (len(weka.first_genes) * len(weka.second_genes))
+      weight = weka.lift / (len(weka.first_genes) * len(weka.second_genes))
       for first_gene in weka.first_genes:
         for second_gene in weka.second_genes:
           relationship = (first_gene, second_gene)
           reverse_relationship = (second_gene, first_gene)
           if relationship in results:
-            results[relationship] += score
+            results[relationship] += weight
           elif reverse_relationship in results:
-            results[reverse_relationship] += score
+            results[reverse_relationship] += weight
           else:
-            results[relationship] = score
+            results[relationship] = weight
 
     return results
-        
+  
+  def normalize_weights(self, results):
+    weights = list(results.values())
+    weight_max = max(weights)
+    weight_min = min(weights)
+
+    print('max:', weight_max, 'min:', weight_min)
+
+    for relationship, weight in results.items():
+      results[relationship] = (weight - weight_min) / (weight_max - weight_min) if weight_max != weight_min else 1
+    return results
         

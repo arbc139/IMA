@@ -92,5 +92,7 @@ class WekaParser():
         continue
 
     weka_result['unknown'] = 0
+
+    print(weka_result)
       
     return WekaResult(weka_result)

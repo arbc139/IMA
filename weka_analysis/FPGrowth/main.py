@@ -23,9 +23,10 @@ with open(options.input_file, 'r') as weka_file:
 
 weka_manager = WekaManager(weka_objects)
 weka_manager.filter_objects()
-weka_manager.normalize()
+# weka_manager.normalize()
 
 analyze_result = weka_manager.analyze()
+analyze_result = weka_manager.normalize_weights(analyze_result)
 
 with open(options.output_file, 'w+') as csv_file:
   csv_manager = CsvManager(csv_file, ['Type', 'Source', 'Target', 'Weight'])
