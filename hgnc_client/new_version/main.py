@@ -37,6 +37,9 @@ with db.cursor(pymysql.cursors.DictCursor) as cursor:
   all_substances = cursor.fetchall()
 print('Find all substance mesh terms time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
+def find_substance(sid, all_substances):
+  return next(substance for substance in all_substances if substance['S_ID'] == sid)
+
 # Get all preprocessed MeSH terms in DB.
 elapsed_millis = get_current_millis()
 all_processeds = None
@@ -47,6 +50,9 @@ with db.cursor(pymysql.cursors.DictCursor) as cursor:
   cursor.execute(query)
   all_processeds = cursor.fetchall()
 print('Find all processd mesh terms time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+
+def find_processeds(sid, all_processeds):
+  return [processed for processed in all_processeds if processed['S_ID'] == sid]
 
 elapsed_millis = get_current_millis()
 all_qualifiers = None
@@ -109,7 +115,12 @@ def check_is_family(mesh_term):
     if len(qualifiers) != 0 or len(descriptors) != 0:
       return True
   return False
-  
+
+sids = list(set([processed['S_ID'] for processed in all_processeds]))
+print('sids:', sids)
+print('first sids processeds:', find_processeds(next(sids), all_processeds))
+print('first sids substance:', find_substance(next(sids), all_substances))
+
 """
 for processed in all_processeds:
   # Except for % character
