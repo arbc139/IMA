@@ -1,4 +1,4 @@
 *.DS_Store
-nohup.out
+*.out
 __pycache__
 *.pyc
