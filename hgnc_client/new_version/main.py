@@ -112,7 +112,7 @@ def save_gene(sid, pmid, hgncid, symbol, max_score, search_query, mesh_term, is_
       sid, pmid, hgncid, symbol, max_score, re.escape(search_query), mesh_term, 1 if is_family else 0) \
     + 'ON DUPLICATE KEY UPDATE ' \
     + 'HGNC_ID="%s", SYMBOL="%s", MAX_SCORE=%s, SEARCH_QUERY="%s", MESH_TERM="%s", IS_FAMILY=%d' % (
-      hgncid, symbol, max_score, search_query, mesh_term, 1 if is_family else 0)
+      hgncid, symbol, max_score, re.escape(search_query), mesh_term, 1 if is_family else 0)
   print(query)
 
   elapsed_millis = get_current_millis()
