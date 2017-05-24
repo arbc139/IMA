@@ -145,7 +145,7 @@ for sid in sids:
   
   # 1. Case, MeSH result is cached.
   mesh = substance['S_NAME']
-  if mesh in mesh_scorequery_map:
+  if mesh in mesh_result_map:
     result = mesh_result_map[mesh]
     save_gene(
       sid, pmid, result['hgnc_id'], result['symbol'], result['max_score'], result['search_query'],
