@@ -196,11 +196,11 @@ for sid in sids:
   
   # Cache gene result information.
   mesh_result_map[mesh] = {
-    hgnc_id: max_doc['hgnc_id'],
-    symbol: max_doc['symbol'],
-    max_score: max_doc['score'],
-    search_query: max_search_query,
-    is_family: is_family,
+    'hgnc_id': max_doc['hgnc_id'],
+    'symbol': max_doc['symbol'],
+    'max_score': max_doc['score'],
+    'search_query': max_search_query,
+    'is_family': is_family,
   }
     
 print('Done.')
