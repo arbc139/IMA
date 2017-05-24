@@ -118,8 +118,8 @@ def check_is_family(mesh_term):
 
 sids = list(set([processed['S_ID'] for processed in all_processeds]))
 print('sids:', sids)
-print('first sids processeds:', find_processeds(next(sids), all_processeds))
-print('first sids substance:', find_substance(next(sids), all_substances))
+print('first sids processeds:', find_processeds(sids[0], all_processeds))
+print('first sids substance:', find_substance(sids[0], all_substances))
 
 """
 for processed in all_processeds:
