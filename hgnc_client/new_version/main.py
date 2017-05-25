@@ -173,10 +173,18 @@ for sid in sids:
     
     # Hgnc response
     elapsed_millis = get_current_millis()
-    response = hgnc_http.request(
-      '/search/' + quote(search_query), 'GET', '', ''
-    )['response']
-    print('HGNC request time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+    while True:
+      try:
+        response = hgnc_http.request(
+          '/search/' + quote(search_query), 'GET', '', ''
+        )['response']
+      except:
+        print('HGNC request failed, so retry after 5 seconds')
+        time.sleep(5)
+        continue
+      else:
+        print('HGNC request time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+        break
 
     # Ignore empty docs, score less than max score.
     if not response['docs'] or max_score >= response['maxScore']:
