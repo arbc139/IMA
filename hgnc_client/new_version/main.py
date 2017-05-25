@@ -147,6 +147,8 @@ for sid in sids:
   mesh = substance['S_NAME']
   if mesh in mesh_result_map:
     result = mesh_result_map[mesh]
+    if result['hgnc_id'] is None:
+      continue
     save_gene(
       sid, pmid, result['hgnc_id'], result['symbol'], result['max_score'], result['search_query'],
       mesh, result['is_family'])
@@ -195,6 +197,13 @@ for sid in sids:
     max_search_query = search_query
   
   if max_doc is None or max_search_query is None:
+    mesh_result_map[mesh] = {
+      'hgnc_id': None,
+      'symbol': None,
+      'max_score': None,
+      'search_query': None,
+      'is_family': None,
+    }
     continue
   
   # Save gene result information to DB.
