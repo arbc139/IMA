@@ -11,3 +11,7 @@ https://pip.pypa.io/en/stable/installing/
 
 ## Client 실행
 `python main.py`
+
+## Commands
+LUNG fulfill 실행하기
+`python main.py -s LUNG_SUBSTANCE -p LUNG_PROCESSED -g LUNG_GENES -f ../../preprocess/LUNG_add_pid_list.txt`

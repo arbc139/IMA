@@ -139,7 +139,7 @@ pids = None
 with open(options.fulfill_file, 'r') as pid_file:
   while True:
     line = pid_file.readline()
-    if not line:
+    if line is None:
       break
     pids.append(int(line))
 print(pids)
