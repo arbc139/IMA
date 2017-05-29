@@ -10,12 +10,12 @@ curs = conn.cursor()
 type_reg = re.compile('Type \w+|type \w+|subtype \w+|sub\-type \w+|Subtype \w+|Sub\-type \w+')
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 
-longnon_reg_1 = re.complie('\w*long[ ]non-coding[ ]RNA\w*')
-longnon_2 = re.complie('\w*long[ ]noncoding[ ]RNA\w*')
-longnon_3 = re.complie('\w*long[ ]non coding[ ]RNA\w*')
-longnon_4 = re.complie('\w*non[ ]coding[ ]RNA\w*')
-longnon_5 = re.complie('\w*noncoding[ ]RNA\w*')
-longnon_6 = re.complie('\w*non-coding[ ]RNA\w*')
+longnon_reg_1 = re.compile('\w*long[ ]non-coding[ ]RNA\w*')
+longnon_2 = re.compile('\w*long[ ]noncoding[ ]RNA\w*')
+longnon_3 = re.compile('\w*long[ ]non coding[ ]RNA\w*')
+longnon_4 = re.compile('\w*non[ ]coding[ ]RNA\w*')
+longnon_5 = re.compile('\w*noncoding[ ]RNA\w*')
+longnon_6 = re.compile('\w*non-coding[ ]RNA\w*')
 
 
 spcae_reg = re.compile('[ ]\w+')
