@@ -10,12 +10,12 @@ curs = conn.cursor()
 type_reg = re.compile('Type \w+|type \w+|subtype \w+|sub\-type \w+|Subtype \w+|Sub\-type \w+')
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 
-longnon_reg_1 = re.compile('\w*long non-coding RNA\w*')
-longnon_2 = re.compile('\w*long noncoding RNA\w*')
-longnon_3 = re.compile('\w*long non coding RNA\w*')
-longnon_4 = re.compile('\w*non coding RNA\w*')
-longnon_5 = re.compile('\w*noncoding RNA\w*')
-longnon_6 = re.compile('\w*non-coding RNA\w*')
+longnon_reg_1 = re.compile('\w*long[ ]non-coding[ ]RNA\w*')
+longnon_2 = re.compile('\w*long[ ]noncoding[ ]RNA\w*')
+longnon_3 = re.compile('\w*long[ ]non coding[ ]RNA\w*')
+longnon_4 = re.compile('\w*non[ ]coding[ ]RNA\w*')
+longnon_5 = re.compile('\w*noncoding[ ]RNA\w*')
+longnon_6 = re.compile('\w*non-coding[ ]RNA\w*')
 
 
 spcae_reg = re.compile('[ ]\w+')
@@ -31,20 +31,14 @@ substance_replace = []
 def micro_delete(name):
 	gene_area = name[0].split(" ")
 	substance_replace.append(gene_area[0])
-def long_delete(name, num):
+def long_delete(name):
 	gene_area = name[0].split(" ")
-	if num == 1:
-		gene = re.sub('\w*long non-coding RNA\w*', '', gene_area[0])
-	elif num ==2:
-		gene = re.sub('\w*long noncoding RNA\w*', '', gene_area[0])
-	elif num ==3:
-		gene = re.sub('\w*long non coding RNA\w*', '', gene_area[0])
-	elif num ==4:
-		gene = re.sub('\w*non coding RNA\w*', '', gene_area[0])
-	elif num ==5:
-		gene = re.sub('\w*noncoding RNA\w*', '', gene_area[0])
-	elif num ==6:
-		gene = re.sub('\w*non-coding RNA\w*', '', gene_area[0])
+	gene = re.sub('\w*long[ ]non-coding[ ]RNA\w*', '', gene_area[0])
+	gene = re.sub('\w*long[ ]noncoding[ ]RNA\w*', '', gene)
+	gene = re.sub('\w*long[ ]non[ ]coding[ ]RNA\w*', '', gene)
+	gene = re.sub('\w*non[ ]coding[ ]RNA\w*', '', gene)
+	gene = re.sub('\w*noncoding[ ]RNA\w*', '', gene)
+	gene = re.sub('\w*non-coding[ ]RNA\w*', '', gene)
 	substance_replace.append(gene)
 	
 
@@ -69,18 +63,8 @@ if __name__ == '__main__':
 		longnon_detect_6 = longnon_6.findall(name[0])
 		if micro_detect:
 			micro_delete(name)
-		elif longnon_detect:
-			long_delete(name,1)
-		elif longnon_detect_2:
-			long_delete(name,2)
-		elif longnon_detect_3:
-			long_delete(name,3)
-		elif longnon_detect_4:
-			long_delete(name,4)
-		elif longnon_detect_5:
-			long_delete(name,5)
-		elif longnon_detect_6:
-			long_delete(name,6)
+		elif longnon_detect or longnon_detect_2 or longnon_detect_3  or longnon_detect_4 or longnon_detect_5 or longnon_detect_6:
+			long_delete(name)
 
 		for elm in substance_replace:
 			query = "INSERT INTO "+disease+"_PROCESSED (S_ID, PM_ID,P_NAME) VALUES (%s, %s,%s)"	
