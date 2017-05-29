@@ -168,6 +168,13 @@ for pid in pids:
     result = query_result_map[search_query]
     if result['hgnc_id'] is None:
       continue
+    gene = None
+    with db.cursor(pymysql.cursors.DictCursor) as cursor:
+      query = 'SELECT * FROM %s where S_ID=%d' % (options.gene_table, sid)
+      cursor.execute(query)
+      gene = cursor.fetchone()
+    if gene and gene['MAX_SCORE'] > result['max_score']:
+      continue
     save_gene(
       sid, pmid, result['hgnc_id'], result['symbol'], result['max_score'], result['search_query'],
       mesh, result['is_family'])
