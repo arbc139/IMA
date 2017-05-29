@@ -31,15 +31,21 @@ substance_replace = []
 def micro_delete(name):
 	gene_area = name[0].split(" ")
 	substance_replace.append(gene_area[0])
-def long_delete(name):
+def long_delete(name, num):
 	gene_area = name[0].split(" ")
-	gene = re.sub('\w*long[ ]non-coding[ ]RNA\w*', '', gene_area)
-	gene = re.sub('\w*long[ ]noncoding[ ]RNA\w*', '', gene)
-	gene = re.sub('\w*long[ ]non[ ]coding[ ]RNA\w*', '', gene)
-	gene = re.sub('\w*non[ ]coding[ ]RNA\w*', '', gene)
-	gene = re.sub('\w*noncoding[ ]RNA\w*', '', gene)
-	gene = re.sub('\w*non-coding[ ]RNA\w*', '', gene)
-	substance_replace.append(gene)
+	if num == 1:
+		gene = re.sub('\w*long[ ]non-coding[ ]RNA\w*', '', gene_area)
+	elif num ==2:
+		gene = re.sub('\w*long[ ]noncoding[ ]RNA\w*', '', gene_area)
+	elif num ==3:
+		gene = re.sub('\w*long[ ]non[ ]coding[ ]RNA\w*', '', gene_area)
+	elif num ==4:
+		gene = re.sub('\w*non[ ]coding[ ]RNA\w*', '', gene_area)
+	elif num ==5:
+		gene = re.sub('\w*noncoding[ ]RNA\w*', '', gene_area)
+	elif num ==6:
+		gene = re.sub('\w*non-coding[ ]RNA\w*', '', gene_area)
+	substance_replace.append(gene[0])
 	
 
 if __name__ == '__main__':
@@ -63,8 +69,18 @@ if __name__ == '__main__':
 		longnon_detect_6 = longnon_6.findall(name[0])
 		if micro_detect:
 			micro_delete(name)
-		elif longnon_detect or longnon_detect_2 or longnon_detect_3  or longnon_detect_4 or longnon_detect_5 or longnon_detect_6:
-			long_delete(name)
+		elif longnon_detect:
+			long_delete(name,1)
+		elif longnon_detect_2:
+			long_delete(name,2)
+		elif longnon_detect_3:
+			long_delete(name,3)
+		elif longnon_detect_4:
+			long_delete(name,4)
+		elif longnon_detect_5:
+			long_delete(name,5)
+		elif longnon_detect_6:
+			long_delete(name,6)
 
 		for elm in substance_replace:
 			query = "INSERT INTO "+disease+"_PROCESSED (S_ID, PM_ID,P_NAME) VALUES (%s, %s,%s)"	
