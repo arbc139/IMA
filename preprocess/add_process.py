@@ -45,7 +45,7 @@ def long_delete(name, num):
 		gene = re.sub('\w*noncoding RNA\w*', '', gene_area[0])
 	elif num ==6:
 		gene = re.sub('\w*non-coding RNA\w*', '', gene_area[0])
-	substance_replace.append(gene[0])
+	substance_replace.append(gene)
 	
 
 if __name__ == '__main__':
