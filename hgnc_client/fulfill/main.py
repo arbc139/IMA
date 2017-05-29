@@ -121,13 +121,11 @@ def save_gene(sid, pmid, hgncid, symbol, max_score, search_query, mesh_term, is_
       hgncid, symbol, max_score, re.escape(search_query), mesh_term, 1 if is_family else 0)
   print(query)
 
-  """
   elapsed_millis = get_current_millis()
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute(query)
   db.commit()
   print('GENE DB insert time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-  """
 
 # MeSH Term and result information map.
 # Key: MeSH Term
