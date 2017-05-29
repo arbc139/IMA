@@ -30,12 +30,12 @@ def micro_delete(name):
 	substance_replace.append(gene_area[0])
 def long_delete(name):
 	gene_area = name[0].split(" ")
-	gene = re.sub('\w*[ ]long non-coding RNA', '', gene_area)
-	gene = re.sub('\w*[ ]long noncoding RNA', '', gene)
-	gene = re.sub('\w*[ ]long non coding RNA', '', gene)
-	gene = re.sub('\w*[ ]non coding RNA', '', gene)
-	gene = re.sub('\w*[ ]noncoding RNA', '', gene)
-	gene = re.sub('\w*[ ]non-coding RNA', '', gene)
+	gene = re.sub('\w*long non-coding RNA\w*', '', gene_area)
+	gene = re.sub('\w*long noncoding RNA\w*', '', gene)
+	gene = re.sub('\w*long non coding RNA\w*', '', gene)
+	gene = re.sub('\w*non coding RNA\w*', '', gene)
+	gene = re.sub('\w*noncoding RNA\w*', '', gene)
+	gene = re.sub('\w*non-coding RNA\w*', '', gene)
 	substance_replace.append(gene)
 	
 
