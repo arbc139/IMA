@@ -10,12 +10,12 @@ curs = conn.cursor()
 type_reg = re.compile('Type \w+|type \w+|subtype \w+|sub\-type \w+|Subtype \w+|Sub\-type \w+')
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 
-longnon_reg_1 = re.compile('\w*long[ ]non-coding[ ]RNA\w*')
-longnon_2 = re.compile('\w*long[ ]noncoding[ ]RNA\w*')
-longnon_3 = re.compile('\w*long[ ]non coding[ ]RNA\w*')
-longnon_4 = re.compile('\w*non[ ]coding[ ]RNA\w*')
-longnon_5 = re.compile('\w*noncoding[ ]RNA\w*')
-longnon_6 = re.compile('\w*non-coding[ ]RNA\w*')
+longnon_reg_1 = re.compile('\w*long non-coding RNA\w*')
+longnon_2 = re.compile('\w*long noncoding RNA\w*')
+longnon_3 = re.compile('\w*long non coding RNA\w*')
+longnon_4 = re.compile('\w*non coding RNA\w*')
+longnon_5 = re.compile('\w*noncoding RNA\w*')
+longnon_6 = re.compile('\w*non-coding RNA\w*')
 
 
 spcae_reg = re.compile('[ ]\w+')
@@ -34,17 +34,17 @@ def micro_delete(name):
 def long_delete(name, num):
 	gene_area = name[0].split(" ")
 	if num == 1:
-		gene = re.sub('\w*long[ ]non-coding[ ]RNA\w*', '', gene_area)
+		gene = re.sub('\w*long non-coding RNA\w*', '', gene_area[0])
 	elif num ==2:
-		gene = re.sub('\w*long[ ]noncoding[ ]RNA\w*', '', gene_area)
+		gene = re.sub('\w*long noncoding RNA\w*', '', gene_area[0])
 	elif num ==3:
-		gene = re.sub('\w*long[ ]non[ ]coding[ ]RNA\w*', '', gene_area)
+		gene = re.sub('\w*long non coding RNA\w*', '', gene_area[0])
 	elif num ==4:
-		gene = re.sub('\w*non[ ]coding[ ]RNA\w*', '', gene_area)
+		gene = re.sub('\w*non coding RNA\w*', '', gene_area[0])
 	elif num ==5:
-		gene = re.sub('\w*noncoding[ ]RNA\w*', '', gene_area)
+		gene = re.sub('\w*noncoding RNA\w*', '', gene_area[0])
 	elif num ==6:
-		gene = re.sub('\w*non-coding[ ]RNA\w*', '', gene_area)
+		gene = re.sub('\w*non-coding RNA\w*', '', gene_area[0])
 	substance_replace.append(gene[0])
 	
 
