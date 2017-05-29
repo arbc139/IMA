@@ -55,8 +55,10 @@ print('Find all processd mesh terms time:', get_elapsed_seconds(get_current_mill
 def find_processeds(sid, all_processeds):
   return [processed for processed in all_processeds if processed['S_ID'] == sid]
 
-def find_processeds_with_pids(pids, all_processeds):
-  return [processed for processed in all_processeds if processed['P_ID'] in pids]
+def find_processed(pid, all_processeds):
+  for processed in all_processeds:
+    if processed['P_ID'] == pid:
+      return processed
 
 elapsed_millis = get_current_millis()
 all_qualifiers = None
@@ -119,11 +121,13 @@ def save_gene(sid, pmid, hgncid, symbol, max_score, search_query, mesh_term, is_
       hgncid, symbol, max_score, re.escape(search_query), mesh_term, 1 if is_family else 0)
   print(query)
 
+  """
   elapsed_millis = get_current_millis()
   with db.cursor(pymysql.cursors.DictCursor) as cursor:
     cursor.execute(query)
   db.commit()
   print('GENE DB insert time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+  """
 
 # MeSH Term and result information map.
 # Key: MeSH Term
@@ -142,93 +146,65 @@ with open(options.fulfill_file, 'r') as pid_file:
     if not line:
       break
     pids.append(int(line))
-print(pids)
 
-"""
-for sid in sids:
+for pid in pids:
+  processed = find_processed(pid, all_processeds)
+  if not processed:
+    continue
+  sid = processed['S_ID']
   substance = find_substance(sid, all_substances)
-  processeds = find_processeds(sid, all_processeds)
+  if not substance
+    continue
 
   pmid = substance['PM_ID']
 
-  if not substance or not processeds:
-    continue
-  
-  # 1. Case, MeSH result is cached.
-  mesh = substance['S_NAME']
-  if mesh in mesh_result_map:
-    result = mesh_result_map[mesh]
-    if result['hgnc_id'] is None:
-      continue
-    save_gene(
-      sid, pmid, result['hgnc_id'], result['symbol'], result['max_score'], result['search_query'],
-      mesh, result['is_family'])
-    continue
+  gene = None
+  with db.cursor(pymysql.cursors.DictCursor) as cursor:
+    query = 'SELECT * FROM %s where S_ID=%d' % (options.gene_table, sid)
+    cursor.execute(query)
+    gene = cursor.fetchone()
   
   is_family = check_is_family(mesh)
   if is_family is None:
     continue
-
-  # 2. Search to hgnc.
-  max_score = 0
-  max_doc = None
-  max_search_query = None
-  for processed in processeds:
-    search_query = processed['P_NAME']
-
-    # Except for % character.
-    if '%' in search_query:
-      continue
-
-    # Tuning, Add "" to both side on query.
-    search_query = '"%s"' % search_query
-    print('search_query:', search_query)
-    
-    # Hgnc response
-    elapsed_millis = get_current_millis()
-    while True:
-      try:
-        response = hgnc_http.request(
-          '/search/' + quote(search_query), 'GET', '', ''
-        )['response']
-      except:
-        print('HGNC request failed, so retry after 5 seconds')
-        time.sleep(5)
-        continue
-      else:
-        print('HGNC request time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
-        break
-
-    # Ignore empty docs, score less than max score.
-    if not response['docs'] or max_score >= response['maxScore']:
-      continue
-    
-    max_score = response['maxScore']
-    max_doc = get_max_score_doc(response['docs'])
-    max_search_query = search_query
   
-  if max_doc is None or max_search_query is None:
-    mesh_result_map[mesh] = {
-      'hgnc_id': None,
-      'symbol': None,
-      'max_score': None,
-      'search_query': None,
-      'is_family': None,
-    }
+  # 2. Search to hgnc.
+  search_query = processed['P_NAME']
+
+  # Except for % character.
+  if '%' in search_query:
     continue
+
+  # Tuning, Add "" to both side on query.
+  search_query = '"%s"' % search_query
+  print('search_query:', search_query)
+  
+  # Hgnc response
+  elapsed_millis = get_current_millis()
+  while True:
+    try:
+      response = hgnc_http.request(
+        '/search/' + quote(search_query), 'GET', '', ''
+      )['response']
+    except:
+      print('HGNC request failed, so retry after 5 seconds')
+      time.sleep(5)
+      continue
+    else:
+      print('HGNC request time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
+      break
+
+  # Ignore empty docs, score less than current saved gene.
+  if not response['docs'] or \
+    (gene and gene['MAX_SCORE'] > response['maxScore']):
+    continue
+  
+  max_score = response['maxScore']
+  max_doc = get_max_score_doc(response['docs'])
   
   # Save gene result information to DB.
   save_gene(
-    sid, pmid, max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], max_search_query, mesh,
+    sid, pmid, max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], search_query, mesh,
     is_family)
-  
-  # Cache gene result information.
-  mesh_result_map[mesh] = {
-    'hgnc_id': max_doc['hgnc_id'],
-    'symbol': max_doc['symbol'],
-    'max_score': max_doc['score'],
-    'search_query': max_search_query,
-    'is_family': is_family,
-  }
-"""
+
 print('Done.')
