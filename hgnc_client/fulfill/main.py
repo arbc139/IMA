@@ -189,6 +189,7 @@ for pid in pids:
     continue
 
   # Tuning, Add "" to both side on query.
+  original_search_query = search_query
   search_query = '"%s"' % search_query
   print('search_query:', search_query)
   
@@ -210,7 +211,7 @@ for pid in pids:
   # Ignore empty docs, score less than current saved gene.
   if not response['docs']:
     # Cache gene result information.
-    query_result_map[search_query] = {
+    query_result_map[original_search_query] = {
       'hgnc_id': None,
       'symbol': None,
       'max_score': None,
@@ -223,7 +224,7 @@ for pid in pids:
   max_doc = get_max_score_doc(response['docs'])
 
   # Cache gene result information.
-  query_result_map[search_query] = {
+  query_result_map[original_search_query] = {
     'hgnc_id': max_doc['hgnc_id'],
     'symbol': max_doc['symbol'],
     'max_score': max_doc['score'],
