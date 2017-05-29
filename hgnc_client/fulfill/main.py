@@ -153,7 +153,7 @@ for pid in pids:
     continue
   sid = processed['S_ID']
   substance = find_substance(sid, all_substances)
-  if not substance
+  if not substance:
     continue
 
   pmid = substance['PM_ID']
