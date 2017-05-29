@@ -208,11 +208,8 @@ for pid in pids:
       print('HGNC request time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
       break
   
-  
-
   # Ignore empty docs, score less than current saved gene.
-  if not response['docs'] or \
-    (gene and gene['MAX_SCORE'] > response['maxScore']):
+  if not response['docs']:
     # Cache gene result information.
     query_result_map[search_query] = {
       'hgnc_id': None,
@@ -223,14 +220,6 @@ for pid in pids:
     }
     continue
   
-  max_score = response['maxScore']
-  max_doc = get_max_score_doc(response['docs'])
-  
-  # Save gene result information to DB.
-  save_gene(
-    sid, pmid, max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], search_query, mesh,
-    is_family)
-  
   # Cache gene result information.
   query_result_map[search_query] = {
     'hgnc_id': max_doc['hgnc_id'],
@@ -239,5 +228,16 @@ for pid in pids:
     'search_query': search_query,
     'is_family': is_family,
   }
+
+  if gene and gene['MAX_SCORE'] > response['maxScore']:
+    continue
+  
+  max_score = response['maxScore']
+  max_doc = get_max_score_doc(response['docs'])
+  
+  # Save gene result information to DB.
+  save_gene(
+    sid, pmid, max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], search_query, mesh,
+    is_family)
 
 print('Done.')
