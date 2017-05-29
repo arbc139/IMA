@@ -135,11 +135,11 @@ def save_gene(sid, pmid, hgncid, symbol, max_score, search_query, mesh_term, is_
 #   is_family,
 # }
 mesh_result_map = dict()
-pids = None
+pids = []
 with open(options.fulfill_file, 'r') as pid_file:
   while True:
     line = pid_file.readline()
-    if line is None:
+    if not line:
       break
     pids.append(int(line))
 print(pids)
