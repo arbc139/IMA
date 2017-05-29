@@ -15,12 +15,12 @@ protein_reg = re.compile('\w*[ ]protein')
 protein_reg_2 = re.compile('\w*[ ]protein$')
 Protein_reg = re.compile('\w*[ ]Protein$')
 micro_reg = re.compile('\w*[ ]microRNA\w*')
-"""longnon = re.complie('\w*long non-coding RNA\w*')
+longnon = re.complie('\w*long non-coding RNA\w*')
 longnon_2 = re.complie('\w*long noncoding RNA\w*')
 longnon_3 = re.complie('\w*long non coding RNA\w*')
 longnon_4 = re.complie('\w*non coding RNA\w*')
 longnon_5 = re.complie('\w*noncoding RNA\w*')
-longnon_6 = re.complie('\w*non-coding RNA\w*')"""
+longnon_6 = re.complie('\w*non-coding RNA\w*')
 
 
 substance_replace = []
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 		protein_detect = protein_reg.findall(name[0])
 		protein_detect_2 = protein_reg_2.findall(name[0])
 		Protein_detect = Protein_reg.findall(name[0])
-		micro_detect = microRNA.findall(name[0])
+		micro_detect= micro_reg.findall(name[0])
 		longnon_detect = longnon.findall(name[0])
 		longnon_detect_2 = longnon_2.findall(name[0])
 		longnon_detect_3 = longnon_3.findall(name[0])
