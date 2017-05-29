@@ -55,7 +55,7 @@ if __name__ == '__main__':
 		longnon_detect = longnon.findall(name[0])
 		longnon_detect_2 = longnon_2.findall(name[0])
 		longnon_detect_3 = longnon_3.findall(name[0])
-		longnon_detect4 = longnon_4.findall(name[0])
+		longnon_detect_4 = longnon_4.findall(name[0])
 		longnon_detect_5 = longnon_5.findall(name[0])
 		longnon_detect_6 = longnon_6.findall(name[0])
 		if micro_detect:
