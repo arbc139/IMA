@@ -127,8 +127,8 @@ def save_gene(sid, pmid, hgncid, symbol, max_score, search_query, mesh_term, is_
   db.commit()
   print('GENE DB insert time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
 
-# MeSH Term and result information map.
-# Key: MeSH Term
+# Query and result information map.
+# Key: Query
 # Value: {
 #   hgnc_id,
 #   symbol,
@@ -136,7 +136,7 @@ def save_gene(sid, pmid, hgncid, symbol, max_score, search_query, mesh_term, is_
 #   search_query,
 #   is_family,
 # }
-mesh_result_map = dict()
+query_result_map = dict()
 pids = []
 with open(options.fulfill_file, 'r') as pid_file:
   while True:
@@ -168,8 +168,22 @@ for pid in pids:
   if is_family is None:
     continue
   
-  # 2. Search to hgnc.
+  # Search to hgnc.
   search_query = processed['P_NAME']
+  
+  # Query result is cached.
+  if search_query in query_result_map:
+    result = query_result_map[search_query]
+    if result['hgnc_id'] is None:
+      continue
+    save_gene(
+      sid, pmid, result['hgnc_id'], result['symbol'], result['max_score'], result['search_query'],
+      mesh, result['is_family'])
+    continue
+  
+  is_family = check_is_family(mesh)
+  if is_family is None:
+    continue
 
   # Except for % character.
   if '%' in search_query:
@@ -193,10 +207,20 @@ for pid in pids:
     else:
       print('HGNC request time:', get_elapsed_seconds(get_current_millis(), elapsed_millis))
       break
+  
+  
 
   # Ignore empty docs, score less than current saved gene.
   if not response['docs'] or \
     (gene and gene['MAX_SCORE'] > response['maxScore']):
+    # Cache gene result information.
+    query_result_map[search_query] = {
+      'hgnc_id': None,
+      'symbol': None,
+      'max_score': None,
+      'search_query': None,
+      'is_family': None,
+    }
     continue
   
   max_score = response['maxScore']
@@ -206,5 +230,14 @@ for pid in pids:
   save_gene(
     sid, pmid, max_doc['hgnc_id'], max_doc['symbol'], max_doc['score'], search_query, mesh,
     is_family)
+  
+  # Cache gene result information.
+  query_result_map[search_query] = {
+    'hgnc_id': max_doc['hgnc_id'],
+    'symbol': max_doc['symbol'],
+    'max_score': max_doc['score'],
+    'search_query': max_search_query,
+    'is_family': is_family,
+  }
 
 print('Done.')
