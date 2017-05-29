@@ -1,5 +1,5 @@
 import tokenize
-import re
+import re as standardre
 import pymysql
 import sys
 
@@ -7,19 +7,19 @@ disease = sys.argv[1]
 
 conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8') 
 curs = conn.cursor()
-type_reg = re.compile('Type \w+|type \w+|subtype \w+|sub\-type \w+|Subtype \w+|Sub\-type \w+')
-name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
+type_reg = standardre.compile('Type \w+|type \w+|subtype \w+|sub\-type \w+|Subtype \w+|Sub\-type \w+')
+name_reg = standardre.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 
-protein_reg = re.compile('\w*[ ]protein')
-protein_reg_2 = re.compile('\w*[ ]protein$')
-Protein_reg = re.compile('\w*[ ]Protein$')
-micro_reg = re.compile('\w*[ ]microRNA\w*')
-longnon = re.complie('\w*long non-coding RNA\w*')
-longnon_2 = re.complie('\w*long noncoding RNA\w*')
-longnon_3 = re.complie('\w*long non coding RNA\w*')
-longnon_4 = re.complie('\w*non coding RNA\w*')
-longnon_5 = re.complie('\w*noncoding RNA\w*')
-longnon_6 = re.complie('\w*non-coding RNA\w*')
+protein_reg = standardre.compile('\w*[ ]protein')
+protein_reg_2 = standardre.compile('\w*[ ]protein$')
+Protein_reg = standardre.compile('\w*[ ]Protein$')
+micro_reg = standardre.compile('\w*[ ]microRNA\w*')
+longnon = standardre.complie('\w*long non-coding RNA\w*')
+longnon_2 = standardre.complie('\w*long noncoding RNA\w*')
+longnon_3 = standardre.complie('\w*long non coding RNA\w*')
+longnon_4 = standardre.complie('\w*non coding RNA\w*')
+longnon_5 = standardre.complie('\w*noncoding RNA\w*')
+longnon_6 = standardre.complie('\w*non-coding RNA\w*')
 
 
 substance_replace = []
@@ -29,12 +29,12 @@ def micro_delete(name):
 	substance_replace.append(gene_area[0])
 def long_delete(name):
 	gene_area = name[0].split(" ")
-	gene = re.sub('\w*long non-coding RNA\w*', '', gene_area)
-	gene = re.sub('\w*long noncoding RNA\w*', '', gene)
-	gene = re.sub('\w*long non coding RNA\w*', '', gene)
-	gene = re.sub('\w*non coding RNA\w*', '', gene)
-	gene = re.sub('\w*noncoding RNA\w*', '', gene)
-	gene = re.sub('\w*non-coding RNA\w*', '', gene)
+	gene = standardre.sub('\w*long non-coding RNA\w*', '', gene_area)
+	gene = standardre.sub('\w*long noncoding RNA\w*', '', gene)
+	gene = standardre.sub('\w*long non coding RNA\w*', '', gene)
+	gene = standardre.sub('\w*non coding RNA\w*', '', gene)
+	gene = standardre.sub('\w*noncoding RNA\w*', '', gene)
+	gene = standardre.sub('\w*non-coding RNA\w*', '', gene)
 	substance_replace.append(gene)
 	
 
