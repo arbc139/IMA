@@ -15,12 +15,12 @@ protein_reg = re.compile('\w*[ ]protein')
 protein_reg_2 = re.compile('\w*[ ]protein$')
 Protein_reg = re.compile('\w*[ ]Protein$')
 micro_reg = re.compile('\w*[ ]microRNA\w*')
-longnon = re.complie('\w*long non-coding RNA\w*')
-longnon_2 = re.complie('\w*long noncoding RNA\w*')
-longnon_3 = re.complie('\w*long non coding RNA\w*')
-longnon_4 = re.complie('\w*non coding RNA\w*')
-longnon_5 = re.complie('\w*noncoding RNA\w*')
-longnon_6 = re.complie('\w*non-coding RNA\w*')
+longnon = re.complie('\w*long[ ]non-coding[ ]RNA\w*')
+longnon_2 = re.complie('\w*long[ ]noncoding[ ]RNA\w*')
+longnon_3 = re.complie('\w*long[ ]non coding[ ]RNA\w*')
+longnon_4 = re.complie('\w*non[ ]coding[ ]RNA\w*')
+longnon_5 = re.complie('\w*noncoding[ ]RNA\w*')
+longnon_6 = re.complie('\w*non-coding[ ]RNA\w*')
 
 
 substance_replace = []
@@ -30,12 +30,12 @@ def micro_delete(name):
 	substance_replace.append(gene_area[0])
 def long_delete(name):
 	gene_area = name[0].split(" ")
-	gene = re.sub('\w*long non-coding RNA\w*', '', gene_area)
-	gene = re.sub('\w*long noncoding RNA\w*', '', gene)
-	gene = re.sub('\w*long non coding RNA\w*', '', gene)
-	gene = re.sub('\w*non coding RNA\w*', '', gene)
-	gene = re.sub('\w*noncoding RNA\w*', '', gene)
-	gene = re.sub('\w*non-coding RNA\w*', '', gene)
+	gene = re.sub('\w*long[ ]non-coding[ ]RNA\w*', '', gene_area)
+	gene = re.sub('\w*long[ ]noncoding[ ]RNA\w*', '', gene)
+	gene = re.sub('\w*long[ ]non[ ]coding[ ]RNA\w*', '', gene)
+	gene = re.sub('\w*non[ ]coding[ ]RNA\w*', '', gene)
+	gene = re.sub('\w*noncoding[ ]RNA\w*', '', gene)
+	gene = re.sub('\w*non-coding[ ]RNA\w*', '', gene)
 	substance_replace.append(gene)
 	
 
