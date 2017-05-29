@@ -70,7 +70,7 @@ if __name__ == '__main__':
 			query = "INSERT INTO "+disease+"_PROCESSED (S_ID, PM_ID,P_NAME) VALUES (%s, %s,%s)"	
 			curs.execute(query,(row[0],row[1],elm))
 			conn.commit()
-			query = "SELECT P_ID from "+disease+"_PROCESSED P_ID order by desc limit 1"
+			query = "SELECT P_ID from "+disease+"_PROCESSED order by P_ID desc limit 1"
 			curs.execute(query)
 			rows = curs.fetchall()
 			for row in rows:
