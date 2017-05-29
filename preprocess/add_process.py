@@ -60,7 +60,7 @@ if __name__ == '__main__':
 		longnon_detect_6 = longnon_6.findall(name[0])
 		if micro_detect:
 			micro_delete(name)
-		elif longnon_detect or longnon_detect_2 or longnon_detect_3  or longnon_detect_4 or longnon_detect_5 or longnon_detect_6::
+		elif longnon_detect or longnon_detect_2 or longnon_detect_3  or longnon_detect_4 or longnon_detect_5 or longnon_detect_6:
 			long_delete(name)
 
 		for elm in substance_replace:
@@ -70,5 +70,6 @@ if __name__ == '__main__':
 			query = "SELECT P_ID from "+disease+"_PROCESSED P_ID desc limit 1"
 			curs.execute(query)
 			rows = curs.fetchall()
-			f_2.write(rows[0]+'\n')
+			for row in rows:
+				f_2.write(row[0]+'\n')
 			
