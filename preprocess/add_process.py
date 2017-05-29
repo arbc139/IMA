@@ -10,17 +10,20 @@ curs = conn.cursor()
 type_reg = re.compile('Type \w+|type \w+|subtype \w+|sub\-type \w+|Subtype \w+|Sub\-type \w+')
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 
-spcae_reg = re.compile('[ ]\w+')
-protein_reg = re.compile('\w*[ ]protein')
-protein_reg_2 = re.compile('\w*[ ]protein$')
-Protein_reg = re.compile('\w*[ ]Protein$')
-micro_reg = re.compile('\w*[ ]microRNA\w*')
 longnon = re.complie('\w*long[ ]non-coding[ ]RNA\w*')
 longnon_2 = re.complie('\w*long[ ]noncoding[ ]RNA\w*')
 longnon_3 = re.complie('\w*long[ ]non coding[ ]RNA\w*')
 longnon_4 = re.complie('\w*non[ ]coding[ ]RNA\w*')
 longnon_5 = re.complie('\w*noncoding[ ]RNA\w*')
 longnon_6 = re.complie('\w*non-coding[ ]RNA\w*')
+
+
+spcae_reg = re.compile('[ ]\w+')
+protein_reg = re.compile('\w*[ ]protein')
+protein_reg_2 = re.compile('\w*[ ]protein$')
+Protein_reg = re.compile('\w*[ ]Protein$')
+micro_reg = re.compile('\w*[ ]microRNA\w*')
+
 
 
 substance_replace = []
