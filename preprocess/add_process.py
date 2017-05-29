@@ -40,7 +40,7 @@ def long_delete(name):
 	
 
 if __name__ == '__main__':
-	filename = disease_name+"_add_pid_list"+".txt"
+	filename = disease+"_add_pid_list"+".txt"
 	f_2 = open(filename,'w')
 	query = "SELECT * FROM "+disease+"_SUBSTANCE"
 	curs.execute(query)
