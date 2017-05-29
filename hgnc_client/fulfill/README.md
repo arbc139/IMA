@@ -15,3 +15,4 @@ https://pip.pypa.io/en/stable/installing/
 ## Commands
 LUNG fulfill 실행하기
 `python main.py -s LUNG_SUBSTANCE -p LUNG_PROCESSED -g LUNG_GENES -f ../../preprocess/LUNG_add_pid_list.txt`
+`nohup python main.py -s PROSTATE_SUBSTANCE -p PROSTATE_PROCESSED -g PROSTATE_GENES -f ../../preprocess/PROSTATE_add_pid_list.txt > prostate_log.out &`
