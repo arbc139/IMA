@@ -155,15 +155,7 @@ for pid in pids:
     continue
 
   pmid = substance['PM_ID']
-
-  gene = None
-  with db.cursor(pymysql.cursors.DictCursor) as cursor:
-    query = 'SELECT * FROM %s where S_ID=%d' % (options.gene_table, sid)
-    cursor.execute(query)
-    gene = cursor.fetchone()
-
   mesh = substance['S_NAME']
-  
   is_family = check_is_family(mesh)
   if is_family is None:
     continue
@@ -220,6 +212,9 @@ for pid in pids:
     }
     continue
   
+  max_score = response['maxScore']
+  max_doc = get_max_score_doc(response['docs'])
+
   # Cache gene result information.
   query_result_map[search_query] = {
     'hgnc_id': max_doc['hgnc_id'],
@@ -229,11 +224,14 @@ for pid in pids:
     'is_family': is_family,
   }
 
+  gene = None
+  with db.cursor(pymysql.cursors.DictCursor) as cursor:
+    query = 'SELECT * FROM %s where S_ID=%d' % (options.gene_table, sid)
+    cursor.execute(query)
+    gene = cursor.fetchone()
+
   if gene and gene['MAX_SCORE'] > response['maxScore']:
     continue
-  
-  max_score = response['maxScore']
-  max_doc = get_max_score_doc(response['docs'])
   
   # Save gene result information to DB.
   save_gene(
