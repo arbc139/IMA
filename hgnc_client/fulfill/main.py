@@ -236,7 +236,7 @@ for pid in pids:
     'hgnc_id': max_doc['hgnc_id'],
     'symbol': max_doc['symbol'],
     'max_score': max_doc['score'],
-    'search_query': max_search_query,
+    'search_query': search_query,
     'is_family': is_family,
   }
 
