@@ -74,5 +74,5 @@ if __name__ == '__main__':
 			curs.execute(query)
 			rows = curs.fetchall()
 			for row in rows:
-				f_2.write(row[0]+'\n')
+				f_2.write(str(row[0])+'\n')
 			
