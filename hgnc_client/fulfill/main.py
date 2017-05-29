@@ -163,6 +163,8 @@ for pid in pids:
     query = 'SELECT * FROM %s where S_ID=%d' % (options.gene_table, sid)
     cursor.execute(query)
     gene = cursor.fetchone()
+
+  mesh = substance['S_NAME']
   
   is_family = check_is_family(mesh)
   if is_family is None:
