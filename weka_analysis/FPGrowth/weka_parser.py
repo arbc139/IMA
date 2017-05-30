@@ -53,9 +53,9 @@ class WekaParser():
       if re.search('=1', token):
         # print('gene:', token)
         if is_first_genes:
-          weka_result['first_genes'].append(re.sub('[=1\[\]\:\,]', '', token))
+          weka_result['first_genes'].append(re.sub('=1', '', re.sub('[\[\]\:\,]', '', token)))
         else:
-          weka_result['second_genes'].append(re.sub('[=1\[\]\:\,]', '', token))
+          weka_result['second_genes'].append(re.sub('=1', '', re.sub('[\[\]\:\,]', '', token)))
         continue
       
       # Gene counts
