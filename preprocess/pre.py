@@ -11,7 +11,7 @@ curs = conn.cursor()
 
 name_reg = re.compile('(?<=\">)[^<]*(?=\<\/nameofsubstance)')
 pmid_reg = re.compile('(?<=\">)[^<]*(?=\<\/pmid)')
-f = open('dentalcaries_mesh.txt')
+f = open(filename)
 lines = f.readlines()
 for line in lines:
 	name = name_reg.findall(line)
