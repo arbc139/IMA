@@ -2,6 +2,8 @@ import tokenize
 import re
 import sys
 import pymysql
+filename = sys.argc[1]
+disease = sys.argv[2]
  
 conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8')
  
@@ -14,7 +16,7 @@ lines = f.readlines()
 for line in lines:
 	name = name_reg.findall(line)
 	pmid = pmid_reg.findall(line)
-	query = "INSERT INTO CARIES_SUBSTANCE (PM_ID, S_NAME) VALUES (%s, %s)"
+	query = "INSERT INTO "+disease+"_SUBSTANCE (PM_ID, S_NAME) VALUES (%s, %s)"
 
 	curs.execute(query,(pmid,name))
 	conn.commit()
