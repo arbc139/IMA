@@ -2,7 +2,7 @@ import tokenize
 import re
 import sys
 import pymysql
-filename = sys.argc[1]
+filename = sys.argv[1]
 disease = sys.argv[2]
  
 conn = pymysql.connect(host='localhost', user='root', password='',db='mesh', charset='utf8')
