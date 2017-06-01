@@ -19,6 +19,7 @@ longnon_3 = re.compile('\w*long[ ]non coding[ ]RNA\w*')
 longnon_4 = re.compile('\w*non[ ]coding[ ]RNA\w*')
 longnon_5 = re.compile('\w*noncoding[ ]RNA\w*')
 longnon_6 = re.compile('\w*non-coding[ ]RNA\w*')
+micro_reg = re.compile('\w*[ ]microRNA\w*')
 
 test_cases = [['1','Antibodies, Monoclonal, Humanized'],['2','Chorionic Gonadotropin, beta Subunit, Human'],['3','Receptors, Pituitary Adenylate Cyclase-Activating Polypeptide, Type III'],['4','Receptors, Tumor Necrosis Factor, Member 10c'],['5','ATP Binding Cassette Transporter, Sub-Family G, Member 2'],['6','ABC protein, Human'],['7','Biomarkers, Tumor'],['8','Receptor, Epidermal Growth Factor'],['9', 'MicroRNA']]
 substance_replace = []
