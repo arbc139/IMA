@@ -116,6 +116,7 @@ query_response_map = dict()
 # sids = list(set([processed['S_ID'] for processed in all_processeds]))
 
 for substance in all_substances:
+  sid = substance['S_ID']
   mesh = substance['S_NAME']
   pmid = substance['PM_ID']
 
