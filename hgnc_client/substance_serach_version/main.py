@@ -17,7 +17,6 @@ def parse_commands(argv):
   from optparse import OptionParser
   parser = OptionParser('"')
   parser.add_option('-s', '--substanceTable', dest='substance_table', help='Database substance table name')
-  parser.add_option('-p', '--processedTable', dest='processed_table', help='Database processed table name')
   parser.add_option('-g', '--geneTable', dest='gene_table', help='Database gene table name')
   parser.add_option('--startSId', dest='start_s_id')
   
