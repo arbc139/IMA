@@ -80,7 +80,8 @@ def others(name):
 	
 
 if __name__ == '__main__':
-	query = "SELECT * FROM "+disease+"_SUBSTANCE"	curs.execute(query)
+	query = "SELECT * FROM "+disease+"_SUBSTANCE"	
+        curs.execute(query)
 	rows = curs.fetchall()
 	for row in rows :
 		del substance_replace[:] 
