@@ -13,3 +13,12 @@
 		[2] java -cp ./weka.jar weka.associations.FPGrowth -t ../data/PROSTATE_5.arff -N 1000000 -T 0 -C 0.01 -D 0.05 -U 1.0 -M 0.00001 -S >> ../result/PROSTATE_5_large.txt
 		위와 같이 하면된다.
 		-C는 min confidence, -M은 min support
+
+nohup python weka_run.py 3 BREAST &
+nohup python weka_run.py 3 COLO &
+nohup python weka_run.py 3 STOMACH &
+
+nohup java -cp ./weka.jar weka.associations.FPGrowth -t ../data/BREAST_3.arff -N 1000000 -T 0 -C 0.01 -D 0.05 -U 1.0 -M 0.0001 -S >> ../result/BREAST_3_c001_m00001.txt &
+nohup java -cp ./weka.jar weka.associations.FPGrowth -t ../data/COLO_3.arff -N 1000000 -T 0 -C 0.01 -D 0.05 -U 1.0 -M 0.0001 -S >> ../result/COLO_3_c001_m00001.txt &
+nohup java -cp ./weka.jar weka.associations.FPGrowth -t ../data/STOMACH_3.arff -N 1000000 -T 0 -C 0.01 -D 0.05 -U 1.0 -M 0.0001 -S >> ../result/STOMACH_3_c001_m00001.txt &
+
