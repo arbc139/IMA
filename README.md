@@ -4,7 +4,9 @@
 
 # Subject
 생물학 논문에서의 MeSH term과 Association rule을 이용하여 질병과 관련된 gene들을 찾아냄. \
-IMA: Identifying disease-related genes using MeSH term and Association Rule
+
+## Publication
+Jeongwoo Kim, Changbae Bang, Hyeonseo Hwang, Doyoung Kim, Chihyun Park, Sanghyun Park, **IMA: Identifying disease-related genes using MeSH terms and association rules**, Journal of Biomedical Informatics, Volume 76, 2017, Pages 110-123
 
 # Structure
 
