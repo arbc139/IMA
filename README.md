@@ -8,6 +8,8 @@
 ## Publication
 Jeongwoo Kim, Changbae Bang, Hyeonseo Hwang, Doyoung Kim, Chihyun Park, Sanghyun Park, **IMA: Identifying disease-related genes using MeSH terms and association rules**, Journal of Biomedical Informatics, Volume 76, 2017, Pages 110-123
 
+https://doi.org/10.1016/j.jbi.2017.11.009
+
 # Structure
 
 ## preprocess
