@@ -3,7 +3,7 @@
 김도영, 방창배, 황현서
 
 # Subject
-생물학 논문에서의 MeSH term과 Association rule을 이용하여 질병과 관련된 gene들을 찾아냄. \
+생물학 논문에서의 MeSH term과 Association rule을 이용하여 질병과 관련된 gene들을 찾아냄.
 
 ## Publication
 Jeongwoo Kim, Changbae Bang, Hyeonseo Hwang, Doyoung Kim, Chihyun Park, Sanghyun Park, **IMA: Identifying disease-related genes using MeSH terms and association rules**, Journal of Biomedical Informatics, Volume 76, 2017, Pages 110-123
